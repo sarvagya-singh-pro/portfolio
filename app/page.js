@@ -1,16 +1,36 @@
 "use client"
 import{delay, motion,useScroll} from 'framer-motion'
-import { useState,useEffect } from 'react'
+import { useState,useEffect,useRef, Suspense} from 'react'
 import { Center, SimpleGrid } from '@mantine/core'
 import styles from './page.module.css'
 import Image from 'next/image'
 import Sarvagya from './sarvagya.png'
-import News18 from './news18.png'
-import Current from './currentBokaro.png'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { useLoader,extend } from '@react-three/fiber'
+import { Sphere,OrbitControls} from '@react-three/drei'
 import '@mantine/core/styles.css';
+import { TextureLoader } from "three/src/loaders/TextureLoader";
+
+import { Canvas, useFrame } from '@react-three/fiber'
 import { Card } from '@mantine/core'
 import MouseFollower from '@/components/mousetracker'
 const page = () => {
+  const name = (type) => `/earth2.jpg`;
+  const [
+    colorMap,
+    displacementMap,
+    normalMap,
+    roughnessMap,
+    aoMap
+  ] = useLoader(TextureLoader, [
+    name("Color"),
+    name("Displacement"),
+    name("Normal"),
+    name("Roughness"),
+    name("AmbientOcclusion")
+  ]);
+  extend({ OrbitControls });
+  const videoRef = useRef();
   const { scrollYProgress } = useScroll();
   const [displayText, setDisplayText] = useState("WEB DEVELOPER . WEB DESIGNER . FRONT END  ENGINEER . BACK END ENGINEER . FULL STACK ENGINEER . DEVOPS . AI ENGINEER . APP DEVELOPER .");
   const cardVariants = {
@@ -31,7 +51,10 @@ const page = () => {
     }
   };
   
-  
+  useEffect(()=>{
+    videoRef.current.playbackRate = 3;
+
+  },[])
   return (
     <>
     <MouseFollower/>
@@ -90,11 +113,21 @@ const page = () => {
       verticalSpacing={{ base: 'md', sm: 'xl' }}
     >
      <div className={styles.projectcard}>
+      <div className={styles.shade}>
       <h2>Nandani</h2>
+     </div>
+     <video ref={videoRef} autoPlay muted loop  style={{ width: '100%', height: '100%' }}>
+        <source src="/nandani.mp4" />
+      </video>
+     
      </div>
      
      <div className={styles.projectcard}>
+      <div className={styles.shade}>
       <h2>Education India</h2>
+      </div><video ref={videoRef} autoPlay muted loop  style={{ width: '100%', height: '100%' }}>
+        <source src="/educationindia.mp4" />
+      </video>
      </div>
      
      <div className={styles.projectcard}>
@@ -115,10 +148,39 @@ const page = () => {
     
     </SimpleGrid>
     </Center>
+    <h1>Contact</h1>
+    <Canvas orbitControls style={{height:'600px'}} >
+    <OrbitControls enableZoom={false} enablePan={false} />
+    <ambientLight intensity={Math.PI / 2} />
+    <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
+    <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+    <Suspense >
+    <Sphere  rotation={[0.25, 3.25, 0]} args={[2.25, 64, 64]}>
+    <meshStandardMaterial
+          displacementScale={0}
+          blendColor={"#2b27a1"}
+          bumpScale={0}
+          map={colorMap}
+          displacementMap={displacementMap}
+          normalMap={normalMap}
+          roughnessMap={roughnessMap}
+          aoMap={aoMap}
+        />
+      
+      </Sphere>
+      <Sphere  pos={[0,0,0]}  args={[0.02, 10, 64]}>
+        <meshPhongMaterial color="red" />
+      </Sphere>
+    </Suspense>
+  </Canvas>
+  
+  <h2>Bokaro JH,India </h2>
+    <h2>singhsarvagya260508@gmail.com</h2>
     </div>
     </div>
     </>
   );
 }
 
+// useGLTF.preload('/earth.gltf')
 export default page;
