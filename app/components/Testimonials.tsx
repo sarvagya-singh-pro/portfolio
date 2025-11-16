@@ -29,7 +29,7 @@ const testimonials = [
     name: "Prof. Afshar Alam De",
     role: "Vice-chacelor, Jamia Hamdard",
     image: "/testimonials/mentor-1.jpg",
-    content: "Sarvagya's research on every was outstanding. He brings creativity and rigor to every problem he tackles. Truely Wonderfull",
+    content: "Sarvagya's research on every topic was outstanding. He brings creativity and rigor to every problem he tackles. Truely Exceptional",
     rating: 5,
     project: "Overall "
   },
