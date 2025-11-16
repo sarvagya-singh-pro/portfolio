@@ -17,26 +17,26 @@ const testimonials = [
   },
   {
     id: 2,
-    name: "Prof. Amit Sharma",
+    name: "Prof. Arun Dayal Udai",
     role: "Faculty, IIT (ISM) Dhanbad",
     image: "/testimonials/professor-1.jpg",
-    content: "Working with Sarvagya on GauSeva was remarkable. His ability to combine IoT, AI, and real-world agricultural needs shows maturity beyond his years.",
+    content:"Sarvagya's dedication to GauSeva and his innovative approach to improving cattle healthcare clearly demonstrate his passion for impactful scientific research",
     rating: 5,
     project: "GauSeva AI"
   },
   {
     id: 3,
-    name: "Dr. Priya Deshmukh",
-    role: "Research Mentor, IISER Bhopal",
+    name: "Prof. Afshar Alam De",
+    role: "Vice-chacelor, Jamia Hamdard",
     image: "/testimonials/mentor-1.jpg",
-    content: "Sarvagya's research on physics-informed neural networks was outstanding. He brings creativity and rigor to every problem he tackles.",
+    content: "Sarvagya's research on every was outstanding. He brings creativity and rigor to every problem he tackles. Truely Wonderfull",
     rating: 5,
-    project: "UNESCO Research"
+    project: "Overall "
   },
   {
     id: 4,
-    name: "Mr. Vikram Patel",
-    role: "CTO, Education India",
+    name: "Mr. Sarthak Siddhant ",
+    role: "Employee, Education India",
     image: "/testimonials/cto-1.jpg",
     content: "As a backend engineer, Sarvagya consistently delivered high-quality code. His database optimization work significantly improved our platform performance.",
     rating: 5,

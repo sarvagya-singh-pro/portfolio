@@ -15,7 +15,7 @@ const publications = [
     type: "Conference",
     abstract: "Developed physics-informed neural network simulating photon behavior in biological tissue for quantum science applications. Selected as finalist at UNESCO Light & Quantum Science Competition.",
     keywords: ["Quantum Physics", "Neural Networks", "Medical Imaging", "PINN"],
-    pdf: "/papers/unesco-quantum.pdf",
+    pdf: "/unesco.pdf",
   
   },
   {
@@ -27,8 +27,8 @@ const publications = [
     type: "Research Paper",
     abstract: "Pioneered multimodal explainable AI diagnostic system combining ECG and cardiac MRI analysis for HCM detection, achieving 98.5% accuracy. Validated with cardiologists at Bokaro General Hospital.",
     keywords: ["Medical AI", "Explainable AI", "Cardiology", "Deep Learning"],
-    pdf: "/papers/pulsesage-hcm.pdf",
-    link: "http://pulseage.org/",
+    pdf: "https://drive.google.com/file/d/1zycW6n2YAEX5jBRN7JC7Ro-GVi8UOAzs/view?usp=sharing",
+   
    
   },
   {
@@ -40,47 +40,9 @@ const publications = [
     type: "Research Paper",
     abstract: "Developed agent-based transmission model and forecasting system for lumpy skin disease in livestock. Research conducted under mentorship at University of Hawaii.",
     keywords: ["Agent-Based Modeling", "Epidemiology", "Computational Biology", "Disease Forecasting"],
-    pdf: "/papers/lumpy-skin-disease.pdf",
+    pdf: "https://drive.google.com/file/d/1kvOiGPBWWzVBGG1V3InBi9GeuCuyXjh7/view?usp=sharing",
     status: "Published"
-  },
-  {
-    id: 4,
-    title: "IoT-Enabled AI Telemedicine System for Real-Time Livestock Disease Diagnosis",
-    authors: "Sarvagya Singh, IIT-ISM Research Team",
-    venue: "IIT (ISM) Dhanbad Research Collaboration",
-    year: "2024",
-    type: "Research Paper",
-    abstract: "Built IoT/AI telemedicine collar system for 16 livestock diseases with real-time monitoring capabilities. Secured trial commitment to serve 40+ rural farms in Jharkhand.",
-    keywords: ["IoT", "Agriculture", "Telemedicine", "Edge Computing"],
-    pdf: "/papers/gauseva-iot.pdf",
-    link: "https://gauseva-ai.vercel.app/",
-    status: "Under Review"
-  },
-  {
-    id: 5,
-    title: "LLM-Based Personalized Nutrition Assistant with Medical Safety Validation",
-    authors: "Sarvagya Singh",
-    venue: "Young Asians Fellowship Program",
-    year: "2024",
-    type: "Technical Report",
-    abstract: "Developed LLM-powered nutrition app for 8 chronic diseases with comprehensive medical safety validation. Presented findings at National University of Singapore.",
-    keywords: ["Large Language Models", "Healthcare", "NLP", "Personalization"],
-    pdf: "/papers/promptbiotics-llm.pdf",
-    link: "https://promptbiotics.org/",
-    status: "Published"
-  },
-  {
-    id: 6,
-    title: "Autonomous Structural Health Monitoring System Using LiDAR and Computer Vision",
-    authors: "Sarvagya Singh",
-    venue: "Independent Research Project",
-    year: "2024",
-    type: "Technical Report",
-    abstract: "Led autonomous rover-drone model for structural fault detection using LiDAR, ultrasonic sensors, and AI. Designed to prevent inspector fatalities in hazardous environments.",
-    keywords: ["Robotics", "Computer Vision", "LiDAR", "Safety Systems"],
-    pdf: "/papers/structural-monitoring.pdf",
-    status: "Published"
-  },
+  }
 ]
 
 export default function Publications() {
@@ -250,32 +212,7 @@ export default function Publications() {
                           <span>PDF</span>
                         </motion.a>
                       )}
-                      {paper.link && (
-                        <motion.a
-                          href={paper.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white/80 text-sm font-medium hover:bg-white/10 transition-colors duration-300"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          <span>Live Demo</span>
-                        </motion.a>
-                      )}
-                      {paper.arxiv && (
-                        <motion.a
-                          href={paper.arxiv}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white/80 text-sm font-medium hover:bg-white/10 transition-colors duration-300"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <BookOpen className="w-4 h-4" />
-                          <span>arXiv</span>
-                        </motion.a>
-                      )}
+                    
                     </div>
                   </div>
 

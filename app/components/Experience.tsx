@@ -12,7 +12,7 @@ const experiences = [
     title: "Backend Software Engineer",
     organization: "Education India",
     location: "Remote",
-    period: "June 2024 - Present",
+    period: "June 2025 - Present",
     description: "Building scalable web applications for educational platforms. Developed authentication systems, database architectures, and REST APIs serving 10,000+ users.",
     achievements: [
       "Optimized database queries reducing load time by 40%",
@@ -21,6 +21,22 @@ const experiences = [
     ],
     icon: Code,
     gradient: "from-blue-500 to-cyan-500"
+  },
+  {
+    id: 3,
+    type: "fellowship",
+    title: "Young Asians Fellow",
+    organization: "Young Asians Fellowship Program",
+    location: "Singapore/India",
+    period: "April 2025 - June 2025",
+    description: "Developed LLM-powered nutrition assistant platform under fellowship program. Presented research at National University of Singapore.",
+    achievements: [
+      "Built production-ready LLM application",
+      "Validated with medical professionals",
+      "Presented findings internationally"
+    ],
+    icon: Award,
+    gradient: "from-orange-500 to-red-500"
   },
   {
     id: 2,
@@ -39,7 +55,7 @@ const experiences = [
     gradient: "from-purple-500 to-pink-500"
   },
   {
-    id: 3,
+    id: 1,
     type: "research",
     title: "Research Collaborator",
     organization: "IIT (ISM) Dhanbad",
@@ -53,22 +69,6 @@ const experiences = [
     ],
     icon: GraduationCap,
     gradient: "from-green-500 to-teal-500"
-  },
-  {
-    id: 4,
-    type: "fellowship",
-    title: "Young Asians Fellow",
-    organization: "Young Asians Fellowship Program",
-    location: "Singapore/India",
-    period: "August 2024 - December 2024",
-    description: "Developed LLM-powered nutrition assistant platform under fellowship program. Presented research at National University of Singapore.",
-    achievements: [
-      "Built production-ready LLM application",
-      "Validated with medical professionals",
-      "Presented findings internationally"
-    ],
-    icon: Award,
-    gradient: "from-orange-500 to-red-500"
   },
   {
     id: 5,

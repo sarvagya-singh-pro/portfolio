@@ -26,7 +26,6 @@ export default function Home() {
       <Achievements />
       <Testimonials />
       <Media />
-      <Blog />
       <CTA />
       <Contact />
       <Footer />
