@@ -60,20 +60,27 @@ export default function About() {
           {/* Content Grid */}
           <div className="grid lg:grid-cols-5 gap-16 items-center">
             {/* Image */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="lg:col-span-2"
-            >
-              <div className="relative group">
-                <div className="relative overflow-hidden rounded-2xl bg-purple-500/5 backdrop-blur-xl border border-purple-500/10 p-1">
-                  <div className="aspect-square bg-gradient-to-br from-purple-500/5 to-blue-500/5 rounded-xl flex items-center justify-center">
-                    <Brain className="w-20 h-20 text-purple-400/60" strokeWidth={1.5} />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+         
+  <motion.div
+    initial={{ opacity: 0, x: -30 }}
+    animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+    transition={{ duration: 0.8, delay: 0.2 }}
+    className="lg:col-span-2"
+  >
+    <div className="relative group">
+      <div className="relative overflow-hidden rounded-2xl bg-purple-500/5 backdrop-blur-xl border border-purple-500/10 p-1">
+        <div className="aspect-square bg-gradient-to-br from-purple-500/5 to-blue-500/5 rounded-xl flex items-center justify-center">
+          <img
+            src="/image.png"
+            alt="Photon Simulation"
+            className="w-4/5 h-full object-contain"
+          />
+        </div>
+      </div>
+    </div>
+  </motion.div>
+
+
 
             {/* Text */}
             <motion.div
@@ -94,8 +101,7 @@ export default function About() {
                 >
                   Bokaro Steel City, India
                 </span>, 
-                Sarvagya transforms data into empathy — designing AI that understands not just disease, 
-                but the people it serves.
+                Sarvagya turns data into empathy by creating AI that comprehends not only illness but also the individuals it treatments.
               </p>
 
               {/* Value Props */}

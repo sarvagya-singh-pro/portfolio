@@ -49,15 +49,7 @@ export default function Hero() {
           className="space-y-10"
         >
           {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 backdrop-blur-xl border border-purple-500/20 text-purple-300 text-xs tracking-wider uppercase font-medium"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>AI & Healthcare Innovation</span>
-          </motion.div>
+        
 
           {/* Name */}
           <motion.h1

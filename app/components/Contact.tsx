@@ -227,16 +227,7 @@ export default function Contact() {
       </div>
 
       {/* Footer */}
-      <motion.footer
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.6, delay: 0.8 }}
-        className="mt-24 pt-12 border-t border-white/10 text-center relative z-10"
-      >
-        <p className="text-white/40 font-light">
-          © 2025 Sarvagya Singh. Building the future of healthcare through AI.
-        </p>
-      </motion.footer>
+    
     </section>
   )
 }
