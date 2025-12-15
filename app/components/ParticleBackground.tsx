@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 
-export default function ParticleBackground() {
+export default function ParticleBackgroundProfessional() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -15,101 +15,196 @@ export default function ParticleBackground() {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
 
-    const particles: Array<{
+    // Configuration for professional neural network matrix
+    const config = {
+      gridSpacing: 80,
+      gridOpacity: 0.02,
+      gridColor: '#60a5fa', // Blue-400
+      nodeCount: 12, // Much fewer, larger nodes
+      nodeColor: { r: 96, g: 165, b: 250 }, // Blue-400 (professional)
+      nodeSize: 8,
+      nodeSpeed: 0.02, // Very slow movement
+      connectionDistance: 300,
+      connectionOpacity: 0.15,
+    }
+
+    // Node system for neural network effect
+    const nodes: Array<{
       x: number
       y: number
+      baseX: number
+      baseY: number
+      vx: number
+      vy: number
       size: number
-      speedX: number
-      speedY: number
       opacity: number
-      color: string
       glowIntensity: number
+      pulsePhase: number
     }> = []
 
-    const colors = [
-      { r: 139, g: 92, b: 246 },   // purple
-      { r: 59, g: 130, b: 246 },    // blue
-      { r: 168, g: 85, b: 247 },    // violet
-      { r: 124, g: 58, b: 237 },    // deep purple
-    ]
+    // Initialize nodes with slow, gentle movement
+    for (let i = 0; i < config.nodeCount; i++) {
+      const x = Math.random() * canvas.width
+      const y = Math.random() * canvas.height
+      
+      nodes.push({
+        x,
+        y,
+        baseX: x,
+        baseY: y,
+        vx: (Math.random() - 0.5) * config.nodeSpeed,
+        vy: (Math.random() - 0.5) * config.nodeSpeed,
+        size: config.nodeSize,
+        opacity: 0.4 + Math.random() * 0.4, // 0.4-0.8
+        glowIntensity: 0.6 + Math.random() * 0.4,
+        pulsePhase: Math.random() * Math.PI * 2,
+      })
+    }
 
-    const particleCount = 80 // Increased from 50
+    let frameCount = 0
 
-    for (let i = 0; i < particleCount; i++) {
-      const colorObj = colors[Math.floor(Math.random() * colors.length)]
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 3 + 1, // Larger particles (1-4px)
-        speedX: (Math.random() - 0.5) * 0.5,
-        speedY: (Math.random() - 0.5) * 0.5,
-        opacity: Math.random() * 0.6 + 0.3, // More visible (0.3-0.9)
-        color: `rgba(${colorObj.r}, ${colorObj.g}, ${colorObj.b}, `,
-        glowIntensity: Math.random() * 0.5 + 0.5
+    function drawGrid() {
+      // Draw static diagonal grid lines for professional structure
+      ctx.strokeStyle = `rgba(96, 165, 250, ${config.gridOpacity})`
+      ctx.lineWidth = 1
+
+      // Vertical lines
+      for (let x = 0; x < canvas.width; x += config.gridSpacing) {
+        ctx.beginPath()
+        ctx.moveTo(x, 0)
+        ctx.lineTo(x, canvas.height)
+        ctx.stroke()
+      }
+
+      // Horizontal lines
+      for (let y = 0; y < canvas.height; y += config.gridSpacing) {
+        ctx.beginPath()
+        ctx.moveTo(0, y)
+        ctx.lineTo(canvas.width, y)
+        ctx.stroke()
+      }
+
+      // Diagonal lines for neural network feel
+      const diagonalSpacing = config.gridSpacing * 2
+      
+      // Diagonal top-left to bottom-right
+      for (let x = -canvas.height; x < canvas.width; x += diagonalSpacing) {
+        ctx.beginPath()
+        ctx.moveTo(x, 0)
+        ctx.lineTo(x + canvas.height, canvas.height)
+        ctx.stroke()
+      }
+
+      // Diagonal top-right to bottom-left
+      for (let x = 0; x < canvas.width + canvas.height; x += diagonalSpacing) {
+        ctx.beginPath()
+        ctx.moveTo(x, 0)
+        ctx.lineTo(x - canvas.height, canvas.height)
+        ctx.stroke()
+      }
+    }
+
+    function drawNodes() {
+      frameCount++
+
+      nodes.forEach((node, i) => {
+        // Gentle oscillating movement (slow, elegant drifting)
+        const time = frameCount * 0.01
+        node.x = node.baseX + Math.sin(time + i) * 40 + node.vx * frameCount
+        node.y = node.baseY + Math.cos(time + i * 0.7) * 40 + node.vy * frameCount
+
+        // Wrap around canvas
+        if (node.x < 0) node.baseX = canvas.width
+        if (node.x > canvas.width) node.baseX = 0
+        if (node.y < 0) node.baseY = canvas.height
+        if (node.y > canvas.height) node.baseY = 0
+
+        // Gentle pulsing glow effect
+        const pulse = 0.5 + Math.sin(time + node.pulsePhase) * 0.5
+        const currentOpacity = node.opacity * pulse
+
+        // Draw glow halo (outer soft gradient)
+        const haloGradient = ctx.createRadialGradient(
+          node.x, node.y, 0,
+          node.x, node.y, node.size * 4
+        )
+        haloGradient.addColorStop(0, `rgba(96, 165, 250, ${currentOpacity * 0.4})`)
+        haloGradient.addColorStop(0.5, `rgba(96, 165, 250, ${currentOpacity * 0.1})`)
+        haloGradient.addColorStop(1, `rgba(96, 165, 250, 0)`)
+
+        ctx.beginPath()
+        ctx.arc(node.x, node.y, node.size * 4, 0, Math.PI * 2)
+        ctx.fillStyle = haloGradient
+        ctx.fill()
+
+        // Draw bright core
+        const coreGradient = ctx.createRadialGradient(
+          node.x, node.y, 0,
+          node.x, node.y, node.size
+        )
+        coreGradient.addColorStop(0, `rgba(96, 165, 250, ${currentOpacity})`)
+        coreGradient.addColorStop(1, `rgba(96, 165, 250, ${currentOpacity * 0.3})`)
+
+        ctx.beginPath()
+        ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2)
+        ctx.fillStyle = coreGradient
+        ctx.fill()
+
+        // Draw solid bright center
+        ctx.beginPath()
+        ctx.arc(node.x, node.y, node.size * 0.4, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity * 0.8})`
+        ctx.fill()
+
+        // Draw connections to nearby nodes
+        nodes.forEach((otherNode, j) => {
+          if (i >= j) return // Avoid duplicate connections
+
+          const dx = node.x - otherNode.x
+          const dy = node.y - otherNode.y
+          const distance = Math.sqrt(dx * dx + dy * dy)
+
+          if (distance < config.connectionDistance && distance > 0) {
+            const connectionOpacity =
+              config.connectionOpacity * (1 - distance / config.connectionDistance)
+
+            // Gradient line connecting nodes
+            const lineGradient = ctx.createLinearGradient(
+              node.x, node.y,
+              otherNode.x, otherNode.y
+            )
+            lineGradient.addColorStop(0, `rgba(96, 165, 250, ${connectionOpacity})`)
+            lineGradient.addColorStop(0.5, `rgba(96, 165, 250, ${connectionOpacity * 1.2})`)
+            lineGradient.addColorStop(1, `rgba(96, 165, 250, ${connectionOpacity})`)
+
+            ctx.beginPath()
+            ctx.strokeStyle = lineGradient
+            ctx.lineWidth = 0.8
+            ctx.moveTo(node.x, node.y)
+            ctx.lineTo(otherNode.x, otherNode.y)
+            ctx.stroke()
+
+            // Optional: Add faint glow to connection line
+            ctx.strokeStyle = `rgba(96, 165, 250, ${connectionOpacity * 0.3})`
+            ctx.lineWidth = 3
+            ctx.stroke()
+          }
+        })
       })
     }
 
     function animate() {
       if (!ctx || !canvas) return
-      
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      particles.forEach((particle, i) => {
-        particle.x += particle.speedX
-        particle.y += particle.speedY
+      // Clear with deep space background
+      ctx.fillStyle = '#0a0e27'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-        if (particle.x < 0 || particle.x > canvas.width) particle.speedX *= -1
-        if (particle.y < 0 || particle.y > canvas.height) particle.speedY *= -1
+      // Draw static grid (always visible, professional structure)
+      drawGrid()
 
-        // Create gradient for each particle (glow effect)
-        const gradient = ctx.createRadialGradient(
-          particle.x, particle.y, 0,
-          particle.x, particle.y, particle.size * 3
-        )
-        gradient.addColorStop(0, particle.color + particle.opacity + ')')
-        gradient.addColorStop(0.5, particle.color + (particle.opacity * 0.5) + ')')
-        gradient.addColorStop(1, particle.color + '0)')
-
-        // Draw glowing particle
-        ctx.beginPath()
-        ctx.arc(particle.x, particle.y, particle.size * 3, 0, Math.PI * 2)
-        ctx.fillStyle = gradient
-        ctx.fill()
-
-        // Draw solid center
-        ctx.beginPath()
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
-        ctx.fillStyle = particle.color + particle.opacity + ')'
-        ctx.fill()
-
-        // Enhanced connections with gradient
-        particles.forEach((particle2, j) => {
-          if (i === j) return
-          const dx = particle.x - particle2.x
-          const dy = particle.y - particle2.y
-          const distance = Math.sqrt(dx * dx + dy * dy)
-
-          if (distance < 150) { // Increased connection distance
-            const opacity = 0.25 * (1 - distance / 150) // More visible connections
-            
-            // Create gradient for connection line
-            const lineGradient = ctx.createLinearGradient(
-              particle.x, particle.y,
-              particle2.x, particle2.y
-            )
-            lineGradient.addColorStop(0, `rgba(139, 92, 246, ${opacity})`)
-            lineGradient.addColorStop(0.5, `rgba(168, 85, 247, ${opacity * 1.2})`)
-            lineGradient.addColorStop(1, `rgba(139, 92, 246, ${opacity})`)
-
-            ctx.beginPath()
-            ctx.strokeStyle = lineGradient
-            ctx.lineWidth = 1 // Thicker lines
-            ctx.moveTo(particle.x, particle.y)
-            ctx.lineTo(particle2.x, particle2.y)
-            ctx.stroke()
-          }
-        })
-      })
+      // Draw animated nodes
+      drawNodes()
 
       requestAnimationFrame(animate)
     }
@@ -128,7 +223,7 @@ export default function ParticleBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 pointer-events-none opacity-60"
+      className="absolute inset-0 pointer-events-none opacity-50 mix-blend-lighten"
     />
   )
 }

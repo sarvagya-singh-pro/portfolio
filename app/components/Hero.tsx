@@ -1,158 +1,95 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { ArrowDown, Sparkles } from 'lucide-react'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { useEffect, useRef } from 'react'
 import ParticleBackground from './ParticleBackground'
-
 export default function Hero() {
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+
+  // Spring physics for "silky" smooth movement
+  const springConfig = { damping: 25, stiffness: 150 }
+  const smoothX = useSpring(mouseX, springConfig)
+  const smoothY = useSpring(mouseY, springConfig)
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX)
+      mouseY.set(e.clientY)
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [mouseX, mouseY])
+
+  // Spotlight Effect
+  const background = useTransform(
+    [smoothX, smoothY],
+    ([x, y]) => `radial-gradient(600px circle at ${x}px ${y}px, rgba(99, 102, 241, 0.15), transparent 80%)`
+  )
+
   return (
-    <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden bg-black">
-      {/* Particle Background */}
-      <ParticleBackground />
-      
-      {/* Gradient Orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute top-1/3 left-1/4 w-[600px] h-[600px] rounded-full blur-[140px]"
-          style={{ background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15), transparent)' }}
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.6, 1, 0.6],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div
-          className="absolute bottom-1/3 right-1/4 w-[600px] h-[600px] rounded-full blur-[140px]"
-          style={{ background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15), transparent)' }}
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.6, 1, 0.6],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
+    <section className="relative min-h-screen w-full bg-zinc-950 flex items-center justify-center overflow-hidden cursor-none">
+      {/* The Physics Spotlight */}
+      <motion.div 
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{ background }}
+      />
+
+      {/* Technical Grid Layer */}
+      <div className="absolute inset-0 z-0 opacity-20 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]">
+        <div className="h-full w-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
+      {/* Floating Elements (The "Wow" factor) */}
+      <motion.div
+        style={{ x: useTransform(smoothX, [0, 1920], [20, -20]), y: useTransform(smoothY, [0, 1080], [20, -20]) }}
+        className="relative z-10 max-w-5xl px-6 text-center"
+      >
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          className="space-y-10"
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Badge */}
-        
-
-          {/* Name */}
-          <motion.h1
-            className="text-5xl md:text-6xl lg:text-7xl font-light tracking-tight text-white"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-          >
-            Sarvagya Singh
-          </motion.h1>
-
-          {/* Tagline with gradient */}
-          <motion.h2
-            className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight tracking-tight"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.8 }}
-          >
-            <span 
-              className="bg-clip-text text-transparent"
-              style={{ 
-                backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
-              }}
-            >
-              Building Intelligent Systems
-            </span>
-            <br />
-            <span className="text-white/40">That Heal</span>
-          </motion.h2>
-
-          {/* Subtitle */}
-          <motion.p
-            className="text-base md:text-lg text-white/30 max-w-xl mx-auto font-light tracking-wide"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9, duration: 0.8 }}
-          >
-            AI · Healthcare · Human-Centered Innovation
-          </motion.p>
-
-          {/* CTA Buttons with gradient */}
-          <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.1, duration: 0.8 }}
-          >
-            <motion.a
-              href="#research"
-              className="relative px-8 py-3 rounded-full font-medium text-sm tracking-wide text-white overflow-hidden group"
-              style={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span className="relative z-10">Explore Research</span>
-              <motion.div
-                className="absolute inset-0"
-                style={{
-                  background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
-                }}
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-            </motion.a>
-            
-            <motion.a
-              href="#contact"
-              className="px-8 py-3 bg-white/5 backdrop-blur-xl text-white rounded-full font-medium text-sm tracking-wide border border-purple-500/20 hover:bg-white/10 hover:border-purple-500/40 transition-all duration-300"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Get in Touch
-            </motion.a>
-          </motion.div>
+          <span className="inline-block text-xs font-mono tracking-[0.3em] text-indigo-500 uppercase mb-4">
+            Computational Intelligence & Biology
+          </span>
+          <h1 className="text-7xl md:text-[10rem] font-bold tracking-tighter text-white leading-[0.8] mb-8 select-none">
+            SARVAGYA <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20">SINGH</span>
+          </h1>
         </motion.div>
-      </div>
 
-      {/* Scroll Indicator */}
-      <motion.button
-        onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-        className="absolute bottom-16 left-1/2 transform -translate-x-1/2 cursor-pointer opacity-30 hover:opacity-100 transition-opacity"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.3, y: [0, 8, 0] }}
-        transition={{
-          opacity: { delay: 1.5, duration: 0.5 },
-          y: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-        }}
-      >
-        <ArrowDown className="w-6 h-6 text-purple-400" strokeWidth={1.5} />
-      </motion.button>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 1 }}
+          className="flex flex-col md:flex-row items-center justify-center gap-8 mt-12"
+        >
+          <p className="text-zinc-500 font-mono text-sm max-w-[280px] text-left border-l border-zinc-800 pl-4">
+            // DEVELOPING INTELLIGENT <br />
+            // SYSTEMS THAT HEAL <br />
+            // LOC: 23.3441° N, 85.3091° E
+          </p>
+          
+          <div className="h-px w-12 bg-zinc-800 hidden md:block" />
 
-      {/* FADE OUT EFFECT AT BOTTOM */}
-      <div 
-        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-20"
-        style={{
-          background: 'linear-gradient(to bottom, transparent, #0a0a0a)'
-        }}
+          {/* Magnetic-style Button */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-10 py-4 bg-white text-black rounded-full font-bold text-sm uppercase tracking-widest hover:bg-indigo-500 hover:text-white transition-all duration-300"
+          >
+            Enter Research
+          </motion.button>
+        </motion.div>
+      </motion.div>
+
+      {/* Custom Cursor Circle */}
+      <motion.div
+        className="fixed top-0 left-0 w-8 h-8 border border-white rounded-full pointer-events-none z-[999] mix-blend-difference"
+        style={{ x: smoothX, y: smoothY, translateX: '-50%', translateY: '-50%' }}
       />
+      <ParticleBackground/>
     </section>
   )
 }

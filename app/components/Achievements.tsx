@@ -1,10 +1,10 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
+import { motion, useInView, useScroll, useSpring } from 'framer-motion'
 import { useRef } from 'react'
-import { Trophy, Award, Target, Zap, Star, Lightbulb, Code, Users, Rocket } from 'lucide-react'
+import { Trophy, Award, Target, Zap, Star, Lightbulb, Code, Users, Rocket, Calendar, TrendingUp } from 'lucide-react'
 
+// Achievement data remains the same for content structure
 const achievements = [
   {
     year: "2025",
@@ -12,7 +12,8 @@ const achievements = [
     title: "UNESCO Light & Quantum Science Competition Finalist",
     description: "Finalist at the prestigious International UNESCO competition. Developed physics-informed neural network simulating photon behavior in biological tissue for quantum science applications.",
     icon: Lightbulb,
-    gradient: "from-yellow-500 to-amber-500"
+    gradient: "from-yellow-500 to-amber-500",
+    color: "text-amber-400"
   },
   {
     year: "2025",
@@ -20,7 +21,8 @@ const achievements = [
     title: "All India Rank 15 - World Robot Olympiad",
     description: "Secured national top 15 ranking at the World Robot Olympiad, demonstrating excellence in robotics engineering and autonomous systems design.",
     icon: Rocket,
-    gradient: "from-cyan-500 to-blue-500"
+    gradient: "from-cyan-500 to-blue-500",
+    color: "text-cyan-400"
   },
   {
     year: "2024",
@@ -28,7 +30,8 @@ const achievements = [
     title: "IISER Bhopal Summer Research Scholar",
     description: "Selected as Research Scholar (250 out of 3,500 applicants) at Indian Institute of Science Education and Research, working on advanced AI/healthcare research projects.",
     icon: Star,
-    gradient: "from-purple-500 to-indigo-500"
+    gradient: "from-purple-500 to-indigo-500",
+    color: "text-indigo-400"
   },
   {
     year: "2024",
@@ -36,7 +39,8 @@ const achievements = [
     title: "National Rank 2 - NIT Jamshedpur Industry Academia Conclave",
     description: "Achieved National Rank 2 at NIT Jamshedpur's prestigious Industry Academia Conclave for innovative AI healthcare solutions.",
     icon: Trophy,
-    gradient: "from-blue-500 to-indigo-500"
+    gradient: "from-blue-500 to-indigo-500",
+    color: "text-blue-400"
   },
   {
     year: "2024",
@@ -44,7 +48,8 @@ const achievements = [
     title: "National Finalist - NCSC (National Children's Science Congress)",
     description: "Selected as National Finalist at India's premier science competition for young researchers, showcasing groundbreaking work in AI and healthcare.",
     icon: Target,
-    gradient: "from-green-500 to-emerald-500"
+    gradient: "from-green-500 to-emerald-500",
+    color: "text-emerald-400"
   },
   {
     year: "2024",
@@ -52,7 +57,8 @@ const achievements = [
     title: "National Top 20 - TECHNICHE IIT Guwahati",
     description: "Ranked in National Top 20 at IIT Guwahati's flagship technology competition, competing against India's brightest student innovators.",
     icon: Award,
-    gradient: "from-purple-500 to-pink-500"
+    gradient: "from-purple-500 to-pink-500",
+    color: "text-pink-400"
   },
   {
     year: "2024",
@@ -60,7 +66,8 @@ const achievements = [
     title: "Young Asians Fellowship - PromptBiotics",
     description: "Selected for prestigious Young Asians Fellowship program to develop LLM-powered nutrition assistant platform.",
     icon: Users,
-    gradient: "from-orange-500 to-red-500"
+    gradient: "from-orange-500 to-red-500",
+    color: "text-orange-400"
   },
   {
     year: "2023-24",
@@ -68,7 +75,8 @@ const achievements = [
     title: "IIT-ISM Research Collaboration - GauSeva AI",
     description: "Collaborated with IIT (ISM) Dhanbad on groundbreaking AI telemedicine collar for livestock health monitoring.",
     icon: Code,
-    gradient: "from-teal-500 to-green-500"
+    gradient: "from-teal-500 to-green-500",
+    color: "text-teal-400"
   },
   {
     year: "2024",
@@ -76,41 +84,50 @@ const achievements = [
     title: "PulseSage - Doctor-Validated Cardiac AI System",
     description: "Developed and validated AI cardiac diagnostic system with 15+ cardiologists for early disease detection.",
     icon: Zap,
-    gradient: "from-red-500 to-pink-500"
+    gradient: "from-red-500 to-pink-500",
+    color: "text-red-400"
   },
 ]
 
-export default function Achievements() {
+export default function ArchitecturalMilestoneTracker() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const isInView = useInView(ref, { once: true, margin: "-100px 0px" }) // Adjust margin for better visibility trigger
+  
+  const timelineRef = useRef(null);
+  // Track scroll progress within the timeline container
+  const { scrollYProgress } = useScroll({ target: timelineRef, offset: ["start 0.25", "end 0.75"] });
+  // Smooth the scroll progress for a spring-like animation
+  const scaleY = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  const fadeIn = {
+    initial: { opacity: 0, y: 30 },
+    animate: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+  }
 
   return (
-    <section id="achievements" className="py-32 px-6 md:px-12 relative overflow-hidden bg-[#0a0a0a]">
-      {/* FADE IN EFFECT AT TOP */}
-      <div 
-        className="absolute top-0 left-0 right-0 h-32 pointer-events-none z-20"
+    <section id="achievements" className="py-32 px-6 md:px-12 relative overflow-hidden bg-[#050505]">
+      
+      {/* Background Glow Orb */}
+      <motion.div
+        className="absolute top-1/4 right-0 w-[600px] h-[600px] rounded-full blur-[150px] opacity-10 pointer-events-none"
         style={{
-          background: 'linear-gradient(to top, transparent, #0a0a0a)'
+          background: 'radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent)'
+        }}
+        animate={{
+          x: [0, -50, 0],
+          y: [0, 30, 0],
+        }}
+        transition={{
+          duration: 30,
+          repeat: Infinity,
+          ease: "easeInOut"
         }}
       />
-
-      {/* Animated Background Lines */}
-      <div className="absolute inset-0">
-        {[...Array(5)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute h-px w-full"
-            style={{ 
-              top: `${20 * (i + 1)}%`,
-              background: 'linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent)'
-            }}
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: isInView ? 1 : 0 }}
-            transition={{ duration: 1.5, delay: i * 0.2 }}
-          />
-        ))}
-      </div>
-
+      
       <div ref={ref} className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0 }}
@@ -118,45 +135,56 @@ export default function Achievements() {
           transition={{ duration: 0.8 }}
           className="space-y-16"
         >
-          {/* Section Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.6 }}
-            className="text-center space-y-6"
-          >
-            <h2 
-              className="text-4xl md:text-5xl font-light tracking-tight bg-clip-text text-transparent"
-              style={{
-                backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
-              }}
-            >
-              Achievements Timeline
-            </h2>
-            <p className="text-lg text-white/40 max-w-3xl mx-auto font-light">
-              Recognition for innovation in AI-driven healthcare solutions and research excellence
-            </p>
-            <div 
-              className="w-20 h-px mx-auto"
-              style={{ background: 'linear-gradient(90deg, #667eea, #764ba2)' }}
-            />
-          </motion.div>
+          
+          {/* Section Header - Consistent Architect Style */}
+          <div className="text-center space-y-4">
+            <motion.div variants={fadeIn}>
+              <h2 
+                className="text-4xl md:text-5xl font-semibold tracking-tighter bg-clip-text text-transparent"
+                style={{
+                  backgroundImage: 'linear-gradient(135deg, #a78bfa 0%, #6366f1 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}
+              >
+                Architectural Milestones
+              </h2>
+              <p className="text-lg text-zinc-500 max-w-3xl mx-auto mt-4 font-light">
+                High-level competition rankings and research distinctions that validate full-stack innovation and technical rigor.
+              </p>
+              
+              <motion.div 
+                className="w-24 h-px mx-auto mt-6"
+                style={{ background: 'linear-gradient(90deg, #6366f1, #a78bfa)' }}
+                initial={{ scaleX: 0 }}
+                animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              />
+            </motion.div>
+          </div>
 
-          {/* Timeline */}
-          <div className="relative pt-8">
-            {/* Center Line with Glow - Animates from top to bottom */}
-            <motion.div
-              className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full hidden md:block origin-top"
-              style={{
-                background: 'linear-gradient(180deg, #667eea, #764ba2, #667eea)',
-                boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)'
-              }}
-              initial={{ scaleY: 0 }}
-              animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
-              transition={{ duration: 2, ease: "easeOut" }}
-            />
+          {/* Timeline Container */}
+          <div ref={timelineRef} className="relative pt-8">
+            
+            {/* SVG Timeline Path */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 h-full hidden md:block">
+                <svg width="2" height="100%" viewBox="0 0 2 100" preserveAspectRatio="none" className="h-full">
+                    <motion.path
+                        d="M 1 0 L 1 100"
+                        style={{ pathLength: scaleY }}
+                        strokeWidth="2"
+                        stroke="#6366f1"
+                        strokeLinecap="round"
+                        className="opacity-40"
+                    />
+                    <path
+                        d="M 1 0 L 1 100"
+                        strokeWidth="1"
+                        stroke="#27272a" // Background color for the path
+                        strokeLinecap="round"
+                    />
+                </svg>
+            </div>
 
             {/* Achievement Cards - Animate top to bottom */}
             <div className="space-y-16 md:space-y-20">
@@ -167,92 +195,83 @@ export default function Achievements() {
                   animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                   transition={{ 
                     duration: 0.5, 
-                    delay: index * 0.15,
+                    delay: 0.4 + index * 0.1, // Staggered entry after header
                     ease: "easeOut"
                   }}
                   className={`flex items-center gap-8 ${
                     index % 2 === 0 ? 'md:flex-row flex-col' : 'md:flex-row-reverse flex-col'
                   }`}
                 >
-                  {/* Card */}
+                  
+                  {/* Card (5/12 width) */}
                   <motion.div
-                    className="w-full md:w-5/12 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 group cursor-pointer relative overflow-hidden"
+                    className="w-full md:w-5/12 bg-zinc-900/50 backdrop-blur-sm border border-zinc-800 rounded-xl p-6 md:p-8 group cursor-pointer relative overflow-hidden transition-shadow duration-300 hover:shadow-2xl hover:shadow-indigo-900/20"
                     whileHover={{ y: -6, scale: 1.02 }}
                     transition={{ duration: 0.3 }}
                   >
-                    {/* Hover Gradient Overlay */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${achievement.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
-                    
+                    {/* Content */}
                     <div className="relative z-10 space-y-4">
-                      {/* Icon */}
-                      <motion.div
-                        className={`w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br ${achievement.gradient} flex items-center justify-center shadow-lg`}
-                        style={{ boxShadow: '0 4px 20px rgba(139, 92, 246, 0.2)' }}
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <achievement.icon className="w-6 h-6 md:w-7 md:h-7 text-white" strokeWidth={1.5} />
-                      </motion.div>
-
-                      {/* Content */}
-                      <div>
-                        <div className="flex items-center gap-2 mb-2 flex-wrap">
-                          <div className="text-xs font-medium text-purple-400 uppercase tracking-wider">
+                      {/* Header with Icon and Date */}
+                      <div className="flex items-start justify-between">
+                        <motion.div
+                          className={`w-12 h-12 rounded-lg bg-indigo-600/10 flex items-center justify-center border border-indigo-500/50`}
+                          whileHover={{ scale: 1.1 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <achievement.icon className={`w-6 h-6 ${achievement.color}`} strokeWidth={1.5} />
+                        </motion.div>
+                        <div className="text-right space-y-1">
+                          <div className="text-xs font-mono uppercase text-zinc-600">
                             {achievement.month}
                           </div>
-                          <div className="text-xs text-white/30">•</div>
-                          <div className="text-xs font-medium text-white/60">
+                          <div className="text-lg font-mono font-bold text-white/80">
                             {achievement.year}
                           </div>
                         </div>
-                        <h3 className="text-lg md:text-xl font-semibold text-white mb-2 group-hover:text-purple-300 transition-colors duration-300 leading-snug">
+                      </div>
+
+                      {/* Title & Description */}
+                      <div>
+                        <h3 className="text-lg md:text-xl font-semibold text-white mb-2 group-hover:text-indigo-400 transition-colors duration-300 leading-snug">
                           {achievement.title}
                         </h3>
-                        <p className="text-white/50 leading-relaxed text-sm font-light">
+                        <p className="text-zinc-400 leading-relaxed text-sm font-light border-l-2 border-zinc-800 pl-3 py-1">
                           {achievement.description}
                         </p>
                       </div>
                     </div>
 
-                    {/* Connection Line to Timeline */}
-                    <div className={`hidden md:block absolute ${index % 2 === 0 ? 'right-0' : 'left-0'} top-1/2 w-8 h-px bg-gradient-to-r ${index % 2 === 0 ? 'from-white/10 to-transparent' : 'from-transparent to-white/10'}`} 
+                    {/* Connection Line to Timeline (for smaller screens) */}
+                    <div className="md:hidden absolute right-0 top-1/2 w-4 h-px bg-zinc-700/50" 
                       style={{ transform: 'translateY(-50%)' }} 
                     />
                   </motion.div>
 
-                  {/* Center Dot with Pulse - Appears in sequence */}
-                  <motion.div
-                    className="relative hidden md:flex w-8 h-8 rounded-full flex-shrink-0 items-center justify-center z-10"
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
-                    transition={{ 
-                      duration: 0.3, 
-                      delay: index * 0.15 + 0.2,
-                      ease: "backOut"
-                    }}
-                  >
-                    {/* Outer Glow Ring */}
+                  {/* Center Dot with Pulse (WOW EFFECT) */}
+                  <div className="relative hidden md:flex w-16 h-16 rounded-full flex-shrink-0 items-center justify-center z-10">
+                    {/* Outer Pulse Glow Ring */}
                     <motion.div
-                      className={`absolute inset-0 rounded-full bg-gradient-to-br ${achievement.gradient}`}
+                      className={`absolute inset-0 rounded-full bg-indigo-500`}
                       animate={{
-                        scale: [1, 1.5, 1],
-                        opacity: [0.3, 0, 0.3],
+                        scale: [0.5, 1.2, 0.5],
+                        opacity: [0.2, 0, 0.2],
                       }}
                       transition={{
-                        duration: 2,
+                        duration: 3,
                         repeat: Infinity,
-                        ease: "easeInOut"
+                        ease: "easeInOut",
+                        delay: index * 0.5 // Stagger the pulse effect
                       }}
                     />
                     
-                    {/* Dot */}
-                    <div className={`relative w-6 h-6 rounded-full bg-gradient-to-br ${achievement.gradient} flex items-center justify-center`}
-                      style={{ boxShadow: '0 0 20px rgba(139, 92, 246, 0.6)' }}
+                    {/* Solid Dot */}
+                    <div className={`relative w-4 h-4 rounded-full bg-indigo-500`}
+                      style={{ boxShadow: '0 0 15px #6366f1' }}
                     >
                       <motion.div
-                        className="w-2 h-2 rounded-full bg-white"
+                        className="w-full h-full rounded-full"
                         animate={{
-                          scale: [1, 1.3, 1],
+                          opacity: [0.8, 1, 0.8],
                         }}
                         transition={{
                           duration: 2,
@@ -261,9 +280,9 @@ export default function Achievements() {
                         }}
                       />
                     </div>
-                  </motion.div>
+                  </div>
 
-                  {/* Spacer */}
+                  {/* Spacer (5/12 width) */}
                   <div className="hidden md:block w-5/12" />
                 </motion.div>
               ))}
@@ -276,7 +295,7 @@ export default function Achievements() {
       <div 
         className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-20"
         style={{
-          background: 'linear-gradient(to bottom, transparent, #000000)'
+          background: 'linear-gradient(to bottom, transparent, #050505)'
         }}
       />
     </section>
