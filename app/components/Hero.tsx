@@ -2,7 +2,13 @@
 
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useEffect, useRef } from 'react'
-import ParticleBackground from './ParticleBackground'
+import dynamic from 'next/dynamic'
+
+const ParticleBackground = dynamic(
+  () => import('./ParticleBackground'),
+  { ssr: false }
+)
+
 export default function Hero() {
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
