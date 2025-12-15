@@ -210,7 +210,7 @@ export default function SystemLogTimeline() {
                       {/* Achievements (Monospace Log Entries) */}
                       <div className="space-y-2 pt-2">
                         <p className="text-xs font-mono uppercase text-zinc-600">
-                            > Execution Output:
+                            Execution Output:
                         </p>
                         <ul className="space-y-1">
                           {exp.achievements.map((achievement, i) => (

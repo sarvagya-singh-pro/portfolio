@@ -176,7 +176,7 @@ export default function FormalResearchIndex() {
                             <span
                               key={idx}
                               className="px-3 py-1 text-xs rounded bg-zinc-800 text-zinc-500 font-mono border border-zinc-700 hover:bg-zinc-700/50 transition-colors duration-300"
-                              whileHover={{ y: -1 }}
+                            
                             >
                                 <Hash className="w-3 h-3 inline mr-1 align-sub" strokeWidth={2} />
                               {keyword}
