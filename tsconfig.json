@@ -34,7 +34,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
-, "next.config.js"  ],
+, "next.config.js", "app/components/ParticleBackground.jsx"  ],
   "exclude": [
     "node_modules"
   ]

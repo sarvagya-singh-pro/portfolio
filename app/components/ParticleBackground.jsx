@@ -20,33 +20,22 @@ export default function ParticleBackgroundProfessional() {
       gridSpacing: 80,
       gridOpacity: 0.02,
       gridColor: '#60a5fa', // Blue-400
-      nodeCount: 12, // Much fewer, larger nodes
-      nodeColor: { r: 96, g: 165, b: 250 }, // Blue-400 (professional)
+      nodeCount: 12,
+      nodeColor: { r: 96, g: 165, b: 250 }, // Blue-400
       nodeSize: 8,
-      nodeSpeed: 0.02, // Very slow movement
+      nodeSpeed: 0.02,
       connectionDistance: 300,
       connectionOpacity: 0.15,
     }
 
     // Node system for neural network effect
-    const nodes: Array<{
-      x: number
-      y: number
-      baseX: number
-      baseY: number
-      vx: number
-      vy: number
-      size: number
-      opacity: number
-      glowIntensity: number
-      pulsePhase: number
-    }> = []
+    const nodes = []
 
     // Initialize nodes with slow, gentle movement
     for (let i = 0; i < config.nodeCount; i++) {
       const x = Math.random() * canvas.width
       const y = Math.random() * canvas.height
-      
+
       nodes.push({
         x,
         y,
@@ -55,7 +44,7 @@ export default function ParticleBackgroundProfessional() {
         vx: (Math.random() - 0.5) * config.nodeSpeed,
         vy: (Math.random() - 0.5) * config.nodeSpeed,
         size: config.nodeSize,
-        opacity: 0.4 + Math.random() * 0.4, // 0.4-0.8
+        opacity: 0.4 + Math.random() * 0.4,
         glowIntensity: 0.6 + Math.random() * 0.4,
         pulsePhase: Math.random() * Math.PI * 2,
       })
@@ -64,7 +53,6 @@ export default function ParticleBackgroundProfessional() {
     let frameCount = 0
 
     function drawGrid() {
-      // Draw static diagonal grid lines for professional structure
       ctx.strokeStyle = `rgba(96, 165, 250, ${config.gridOpacity})`
       ctx.lineWidth = 1
 
@@ -86,7 +74,7 @@ export default function ParticleBackgroundProfessional() {
 
       // Diagonal lines for neural network feel
       const diagonalSpacing = config.gridSpacing * 2
-      
+
       // Diagonal top-left to bottom-right
       for (let x = -canvas.height; x < canvas.width; x += diagonalSpacing) {
         ctx.beginPath()
@@ -108,7 +96,7 @@ export default function ParticleBackgroundProfessional() {
       frameCount++
 
       nodes.forEach((node, i) => {
-        // Gentle oscillating movement (slow, elegant drifting)
+        // Gentle oscillating movement
         const time = frameCount * 0.01
         node.x = node.baseX + Math.sin(time + i) * 40 + node.vx * frameCount
         node.y = node.baseY + Math.cos(time + i * 0.7) * 40 + node.vy * frameCount
@@ -158,7 +146,7 @@ export default function ParticleBackgroundProfessional() {
 
         // Draw connections to nearby nodes
         nodes.forEach((otherNode, j) => {
-          if (i >= j) return // Avoid duplicate connections
+          if (i >= j) return
 
           const dx = node.x - otherNode.x
           const dy = node.y - otherNode.y
@@ -184,7 +172,7 @@ export default function ParticleBackgroundProfessional() {
             ctx.lineTo(otherNode.x, otherNode.y)
             ctx.stroke()
 
-            // Optional: Add faint glow to connection line
+            // Add faint glow to connection line
             ctx.strokeStyle = `rgba(96, 165, 250, ${connectionOpacity * 0.3})`
             ctx.lineWidth = 3
             ctx.stroke()
@@ -200,7 +188,7 @@ export default function ParticleBackgroundProfessional() {
       ctx.fillStyle = '#0a0e27'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-      // Draw static grid (always visible, professional structure)
+      // Draw static grid
       drawGrid()
 
       // Draw animated nodes
