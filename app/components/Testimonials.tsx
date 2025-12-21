@@ -15,17 +15,9 @@ const testimonials = [
     rating: 5,
     project: "PulseSage"
   },
+  
   {
     id: 2,
-    name: "Prof. Arun Dayal Udai",
-    role: "Faculty, IIT (ISM) Dhanbad",
-    image: "/testimonials/professor-1.jpg",
-    content:"Sarvagya's dedication to GauSeva and his innovative approach to improving cattle healthcare clearly demonstrate his passion for impactful scientific research",
-    rating: 5,
-    project: "GauSeva AI"
-  },
-  {
-    id: 3,
     name: "Prof. Afshar Alam De",
     role: "Vice-chancellor, Jamia Hamdard",
     image: "/testimonials/mentor-1.jpg",
@@ -34,7 +26,7 @@ const testimonials = [
     project: "Overall "
   },
   {
-    id: 4,
+    id: 3,
     name: "Mr. Sarthak Siddhant ",
     role: "Employee, Education India",
     image: "/testimonials/cto-1.jpg",

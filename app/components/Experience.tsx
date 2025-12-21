@@ -55,22 +55,9 @@ const experiences = [
       "Collaborated with interdisciplinary research team"
     ],
   },
+  
   {
     id: 4,
-    type: "research",
-    title: "Research Collaborator",
-    organization: "IIT (ISM) Dhanbad",
-    location: "Dhanbad, India",
-    period: "January 2024 - Present",
-    description: "Collaborating on GauSeva AI telemedicine project for livestock health monitoring. Building IoT-enabled AI diagnostic system.",
-    achievements: [
-      "Developed real-time disease detection algorithms",
-      "Secured trial commitment from 40+ rural farms",
-      "Integrated edge computing for remote diagnostics"
-    ],
-  },
-  {
-    id: 5,
     type: "research",
     title: "Independent Researcher",
     organization: "PulseSage - Cardiac AI System",

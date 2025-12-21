@@ -22,20 +22,6 @@ const projects = [
   },
   {
     id: 2,
-    title: "GauSeva: AI Telemedicine Collar",
-    subtitle: "AI Telemedicine Collar for Livestock",
-    description: "Groundbreaking wearable AI technology developed in collaboration with IIT-ISM. Real-time health monitoring and disease prediction for livestock, revolutionizing rural veterinary care and farmer livelihoods.",
-    tags: ["IoT", "Machine Learning", "Agriculture", "IIT Collaboration", "Python"],
-    icon: Stethoscope,
-    gradient: "from-green-600/10 to-emerald-600/10",
-    glowColor: "rgba(16, 185, 129, 0.3)",
-    iconColor: "text-emerald-400",
-    impact: "IIT-ISM Research Collaboration",
-    rating: 85,
-    link: "https://gauseva-ai.vercel.app/"
-  },
-  {
-    id: 3,
     title: "PromptBiotics: LLM Nutrition Assistant",
     subtitle: "LLM-Powered Nutrition Assistant",
     description: "Intelligent nutrition guidance system powered by large language models. Developed under the Young Asians Fellowship, providing personalized dietary recommendations and health insights through conversational AI.",
@@ -49,7 +35,7 @@ const projects = [
     link: "https://promptbiotics.org/"
   },
   {
-    id: 4,
+    id: 3,
     title: "Tech Dragon: Future Tech Insights",
     subtitle: "Future Tech Insights & Research",
     description: "Democratizing AI education through accessible, high-quality content. A comprehensive publication making advanced machine learning concepts understandable for students and researchers across India.",
