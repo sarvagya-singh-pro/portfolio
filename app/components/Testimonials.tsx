@@ -1,143 +1,122 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
-import { Quote, Star } from 'lucide-react'
+import { CheckCircle2, Quote } from 'lucide-react'
 
 const testimonials = [
   {
-    id: 1,
     name: "Dr. Rajesh Kumar",
     role: "Cardiologist, Bokaro General Hospital",
-    image: "/testimonials/doctor-1.jpg",
-    content: "Sarvagya's PulseSage system demonstrates exceptional understanding of cardiac diagnostics. The AI model's accuracy and explainability make it a valuable tool for clinical practice.",
-    rating: 5,
-    project: "PulseSage"
-  },
-  
-  {
-    id: 2,
-    name: "Prof. Afshar Alam De",
-    role: "Vice-chancellor, Jamia Hamdard",
-    image: "/testimonials/mentor-1.jpg",
-    content: "Sarvagya's research on every topic was outstanding. He brings creativity and rigor to every problem he tackles. Truely Exceptional",
-    rating: 5,
-    project: "Overall "
+    content: "The PulseSage system demonstrates exceptional depth in cardiac diagnostics. The model’s 98.5% sensitivity and clear saliency mapping make it a viable tool for clinical assistance.",
+    status: "Clinical Validation",
+    scope: "Medical AI"
   },
   {
-    id: 3,
-    name: "Mr. Sarthak Siddhant ",
-    role: "Employee, Education India",
-    image: "/testimonials/cto-1.jpg",
-    content: "As a backend engineer, Sarvagya consistently delivered high-quality code. His database optimization work significantly improved our platform performance.",
-    rating: 5,
-    project: "Education India"
+    name: "Prof. Afshar Alam",
+    role: "Vice-Chancellor, Jamia Hamdard",
+    content: "Sarvagya's research rigor is outstanding. He brings a unique combination of computational creativity and technical discipline to every complex problem he tackles.",
+    status: "Academic Review",
+    scope: "Overall Research"
   },
+  {
+    name: "Sarthak Siddhant",
+    role: "Lead, Education India",
+    content: "As a developer, he consistently delivers high-integrity code. His work on database schema optimization and system architecture significantly improved our infrastructure performance.",
+    status: "Technical Audit",
+    scope: "Full-Stack Systems"
+  }
 ]
 
 export default function Testimonials() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const containerRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  })
+
+  const gridY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"])
 
   return (
-    <section id="testimonials" className="py-32 px-6 md:px-12 relative overflow-hidden bg-[#0a0a0a]">
-      {/* FADE IN EFFECT */}
-      <div 
-        className="absolute top-0 left-0 right-0 h-32 pointer-events-none z-20"
-        style={{
-          background: 'linear-gradient(to top, transparent, #0a0a0a)'
-        }}
-      />
+    <section ref={containerRef} id="testimonials" className="py-60 px-6 bg-white relative overflow-hidden">
+      
+      {/* Premium Blueprint Background */}
+      <motion.div style={{ y: gridY }} className="absolute inset-0 -z-10 pointer-events-none opacity-[0.09]">
+        <div className="absolute inset-0" style={{ 
+          backgroundImage: `radial-gradient(#8DA1B9 1px, transparent 1px)`, 
+          backgroundSize: '44px 44px' 
+        }} />
+        <div className="absolute inset-0 opacity-[0.25]" style={{ 
+          backgroundImage: `linear-gradient(#8DA1B9 0.8px, transparent 0.8px), linear-gradient(90deg, #8DA1B9 0.8px, transparent 0.8px)`, 
+          backgroundSize: '180px 180px' 
+        }} />
+      </motion.div>
 
-      <div ref={ref} className="max-w-7xl mx-auto relative z-10">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.8 }}
-          className="space-y-16"
-        >
-          {/* Section Header */}
-          <div className="text-center space-y-6">
+      <div className="max-w-6xl mx-auto relative z-10">
+        
+        {/* Header */}
+        <div className="mb-32 text-center md:text-left">
+          <div className="flex items-center justify-center md:justify-start gap-3 mb-6">
+            <div className="w-8 h-[1px] bg-[#8DA1B9]" />
+            <span className="text-[11px] font-bold tracking-[0.5em] text-[#8DA1B9] uppercase">
+              TESTIMONIALS
+            </span>
+          </div>
+          <h2 className="text-5xl md:text-7xl font-light tracking-[-1px] text-black leading-none">
+            Trusted voices.<br />
+            <span className="text-[#8DA1B9]">Real impact.</span>
+          </h2>
+        </div>
+
+        {/* Testimonials Grid */}
+        <div className="grid md:grid-cols-3 gap-8">
+          {testimonials.map((item, i) => (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.6 }}
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: i * 0.1 }}
+              className="group bg-white border border-zinc-100 rounded-3xl p-10 hover:border-[#8DA1B9]/40 hover:shadow-2xl transition-all duration-500 flex flex-col h-full"
             >
-              <h2 
-                className="text-4xl md:text-5xl font-light tracking-tight bg-clip-text text-transparent"
-                style={{
-                  backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
-                }}
-              >
-                Testimonials
-              </h2>
-              <p className="text-lg text-white/40 max-w-3xl mx-auto mt-4 font-light">
-                What mentors, collaborators, and professionals say about working with me
+              {/* Quote Icon */}
+              <div className="mb-8">
+                <Quote className="w-10 h-10 text-[#8DA1B9]/10 group-hover:text-[#8DA1B9]/30 transition-colors" />
+              </div>
+
+              {/* Testimonial Text */}
+              <p className="text-[21px] leading-tight font-light text-zinc-600 italic flex-1">
+                “{item.content}”
               </p>
-              
-              <motion.div 
-                className="w-20 h-px mx-auto mt-6"
-                style={{ background: 'linear-gradient(90deg, #667eea, #764ba2)' }}
-                initial={{ scaleX: 0 }}
-                animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              />
-            </motion.div>
-          </div>
 
-          {/* Testimonials Grid */}
-          <div className="grid md:grid-cols-2 gap-6">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={testimonial.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-6 h-full hover:bg-white/[0.07] transition-all duration-500 group">
-                  {/* Quote Icon */}
-                  <Quote className="w-8 h-8 text-purple-400/30 mb-4" />
-                  
-                  {/* Content */}
-                  <p className="text-white/70 leading-relaxed text-sm mb-6 italic">
-                    "{testimonial.content}"
-                  </p>
+              {/* Status Badge */}
+              <div className="flex items-center gap-2 mt-10 mb-6">
+                <CheckCircle2 className="w-4 h-4 text-[#007AFF]" />
+                <span className="text-xs font-semibold tracking-widest text-[#007AFF] uppercase">
+                  {item.status}
+                </span>
+              </div>
 
-                  {/* Rating */}
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                    ))}
-                  </div>
-
-                  {/* Author */}
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-semibold">
-                      {testimonial.name.split(' ').map(n => n[0]).join('')}
-                    </div>
-                    <div>
-                      <p className="text-white font-medium text-sm">{testimonial.name}</p>
-                      <p className="text-white/50 text-xs">{testimonial.role}</p>
-                      <p className="text-purple-400 text-xs mt-1">{testimonial.project}</p>
-                    </div>
-                  </div>
+              {/* Author */}
+              <div className="border-t border-zinc-100 pt-6">
+                <p className="font-semibold text-lg text-black">{item.name}</p>
+                <p className="text-sm text-zinc-500">{item.role}</p>
+                <div className="mt-4 text-[10px] font-medium text-zinc-400 tracking-widest">
+                  SCOPE • {item.scope}
                 </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
 
-      {/* FADE OUT */}
-      <div 
-        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-20"
-        style={{
-          background: 'linear-gradient(to bottom, transparent, #000000)'
-        }}
-      />
+        {/* Closing Signature */}
+        <div className="mt-40 text-center">
+          <div className="inline-flex items-center gap-3 px-6 py-3 bg-white border border-zinc-100 rounded-3xl text-xs font-semibold text-zinc-400 tracking-[0.5em]">
+            <div className="w-2 h-2 bg-[#8DA1B9] rounded-full animate-pulse" />
+            VERIFIED BY INDUSTRY &amp; ACADEMIA
+          </div>
+        </div>
+      </div>
     </section>
   )
 }

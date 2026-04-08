@@ -2,130 +2,86 @@
 
 import { useEffect, useRef } from 'react'
 
-export default function ParticleBackgroundProfessional() {
+export default function DustyBlueRibbon() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const animationRef = useRef<number | null>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
 
-    const canvasEl = canvas // ✅ non-null alias
+    let width = window.innerWidth
+    let height = window.innerHeight
 
-    const context = canvasEl.getContext('2d')
-    if (!context) return
+   const resize = () => {
+  const dpr = window.devicePixelRatio || 1
+  width = window.innerWidth
+  height = window.innerHeight
+  canvas.width = width * dpr
+  canvas.height = height * dpr
+  ctx.scale(dpr, dpr)
+}
 
-    const ctx = context // ✅ non-null alias
+    window.addEventListener('resize', resize)
+    resize()
 
-    canvasEl.width = window.innerWidth
-    canvasEl.height = window.innerHeight
-
-    const config = {
-      gridSpacing: 80,
-      gridOpacity: 0.02,
-      nodeCount: 12,
-      nodeSize: 8,
-      nodeSpeed: 0.02,
-      connectionDistance: 300,
-      connectionOpacity: 0.15,
-    }
-
-    const nodes: {
-      x: number
-      y: number
-      baseX: number
-      baseY: number
-      vx: number
-      vy: number
-      size: number
-      opacity: number
-      pulsePhase: number
-    }[] = []
-
-    for (let i = 0; i < config.nodeCount; i++) {
-      const x = Math.random() * canvasEl.width
-      const y = Math.random() * canvasEl.height
-
-      nodes.push({
-        x,
-        y,
-        baseX: x,
-        baseY: y,
-        vx: (Math.random() - 0.5) * config.nodeSpeed,
-        vy: (Math.random() - 0.5) * config.nodeSpeed,
-        size: config.nodeSize,
-        opacity: 0.4 + Math.random() * 0.4,
-        pulsePhase: Math.random() * Math.PI * 2,
-      })
-    }
-
-    let frame = 0
-
-    function drawGrid() {
-      ctx.strokeStyle = `rgba(96,165,250,${config.gridOpacity})`
-      ctx.lineWidth = 1
-
-      for (let x = 0; x < canvasEl.width; x += config.gridSpacing) {
-        ctx.beginPath()
-        ctx.moveTo(x, 0)
-        ctx.lineTo(x, canvasEl.height)
-        ctx.stroke()
-      }
-
-      for (let y = 0; y < canvasEl.height; y += config.gridSpacing) {
-        ctx.beginPath()
-        ctx.moveTo(0, y)
-        ctx.lineTo(canvasEl.width, y)
-        ctx.stroke()
-      }
-    }
-
-    function drawNodes() {
-      frame++
-
-      nodes.forEach((node, i) => {
-        const t = frame * 0.01
-        node.x = node.baseX + Math.sin(t + i) * 40
-        node.y = node.baseY + Math.cos(t + i) * 40
-
-        ctx.beginPath()
-        ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(96,165,250,${node.opacity})`
-        ctx.fill()
-      })
-    }
+    let time = 0
 
     function animate() {
-      ctx.fillStyle = '#0a0e27'
-      ctx.fillRect(0, 0, canvasEl.width, canvasEl.height)
+      time += 0.012 // Ultra-slow for that premium, weighted feel
+      ctx.clearRect(0, 0, width, height)
+      
+      ctx.fillStyle = '#ffffff'
+      ctx.fillRect(0, 0, width, height)
 
-      drawGrid()
-      drawNodes()
+      // --- DUSTY BLUE LIQUID DYNAMICS ---
+      // Base Color: #8DA1B9 (Dusty Blue)
+      const layers = [
+        { width: 180, color: 'rgba(141, 161, 185, 0.08)', blur: 60, offset: 0 },   // Ambient drift
+        { width: 120, color: 'rgba(110, 135, 165, 0.65)', blur: 30, offset: 12 },  // Main silk body
+        { width: 40, color: 'rgba(255, 255, 255, 0.25)', blur: 15, offset: -8 }   // Specular edge
+      ]
+
+      layers.forEach((layer) => {
+        ctx.filter = `blur(${layer.blur}px)`
+        ctx.beginPath()
+        ctx.strokeStyle = layer.color
+        ctx.lineWidth = layer.width
+        ctx.lineCap = 'round'
+        ctx.lineJoin = 'round'
+
+        const startX = width * 0.75 + layer.offset
+        ctx.moveTo(startX, -300)
+
+        // Flat, elegant "S" path
+        for (let i = 0; i < 48; i++) {
+          const t = i / 8
+          // Large amplitude, low frequency swing
+          const x = (width * 0.72 + Math.sin(t + time) * (width * 0.18)) + layer.offset
+          const y = (i * (height / 30)) + Math.cos(time * 0.25) * 40
+          ctx.lineTo(x, y)
+        }
+        ctx.stroke()
+      })
 
       animationRef.current = requestAnimationFrame(animate)
     }
 
     animate()
 
-    const handleResize = () => {
-      canvasEl.width = window.innerWidth
-      canvasEl.height = window.innerHeight
-    }
-
-    window.addEventListener('resize', handleResize)
-
     return () => {
-      if (animationRef.current !== null) {
-        cancelAnimationFrame(animationRef.current)
-      }
-      window.removeEventListener('resize', handleResize)
+      if (animationRef.current) cancelAnimationFrame(animationRef.current)
+      window.removeEventListener('resize', resize)
     }
   }, [])
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 pointer-events-none opacity-50 mix-blend-lighten"
+      className="fixed inset-0 w-full h-full -z-10"
+      style={{ pointerEvents: 'none' }}
     />
   )
 }

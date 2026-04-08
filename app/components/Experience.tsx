@@ -1,229 +1,263 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
-import { useRef } from 'react'
-import { Briefcase, GraduationCap, Code, Award, Terminal, Activity, Layers, Calendar, ChevronRight } from 'lucide-react'
-
-// Map icons to labels for the log aesthetic
-const experienceMap = {
-  work: { icon: Briefcase, label: "[WORK]", color: "text-green-400", bg: "bg-green-600/10" },
-  research: { icon: Layers, label: "[RESEARCH]", color: "text-cyan-400", bg: "bg-cyan-600/10" },
-  fellowship: { icon: Award, label: "[FELLOW]", color: "text-yellow-400", bg: "bg-yellow-600/10" },
-}
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { useEffect, useRef } from 'react'
+import { MapPin, Terminal } from 'lucide-react'
 
 const experiences = [
   {
-    id: 1,
-    type: "work",
-    title: "Backend Software Engineer",
+    type: "Work",
+    title: "Full-Stack Developer",
     organization: "Education India",
-    location: "Remote",
-    period: "June 2025 - Present",
-    description: "Building scalable web applications for educational platforms. Developed authentication systems, database architectures, and REST APIs serving 10,000+ users.",
-    achievements: [
-      "Optimized database queries reducing load time by 40%",
-      "Built secure authentication system with JWT",
-      "Designed scalable MySQL database architecture"
-    ],
+    location: "Bokaro, IN",
+    period: "2025 — Present",
+    description: "Architecting a high-end institutional platform connecting educators. Focused on minimalist UI refinement and scalable backend infrastructure using Next.js and Prisma.",
+    impact: ["System Architecture", "UI Refinement", "Database Scaling"]
   },
   {
-    id: 3,
-    type: "fellowship",
-    title: "Young Asians Fellow",
-    organization: "Young Asians Fellowship Program",
-    location: "Singapore/India",
-    period: "April 2025 - June 2025",
-    description: "Developed LLM-powered nutrition assistant platform under fellowship program. Presented research at National University of Singapore.",
-    achievements: [
-      "Built production-ready LLM application",
-      "Validated with medical professionals",
-      "Presented findings internationally"
-    ],
-  },
-  {
-    id: 2,
-    type: "research",
-    title: "Summer Research Scholar",
+    type: "Fellowship",
+    title: "AI Research Fellow",
     organization: "IISER Bhopal",
-    location: "Bhopal, India",
-    period: "May 2024 - July 2024",
-    description: "Selected as one of 250 scholars from 3,500 applicants. Conducted advanced AI/healthcare research under faculty mentorship.",
-    achievements: [
-      "Developed physics-informed neural network models",
-      "Published research findings at national competition",
-      "Collaborated with interdisciplinary research team"
-    ],
+    location: "Bhopal, IN",
+    period: "Summer 2024",
+    description: "Selected for the top 7% of applicants. Developed RAG-based clinical decision support and PINN frameworks for medical diagnostics.",
+    impact: ["Top 7% Selection", "RAG Systems", "PINN Development"]
   },
-  
   {
-    id: 4,
-    type: "research",
-    title: "Independent Researcher",
-    organization: "PulseSage - Cardiac AI System",
-    location: "Bokaro Steel City, India",
-    period: "March 2024 - Present",
-    description: "Pioneering multimodal explainable AI for cardiac disease diagnosis. Validated with 15+ cardiologists at local hospitals.",
-    achievements: [
-      "Achieved 98.5% diagnostic accuracy",
-      "Developed explainable AI visualization tools",
-      "Clinical validation with medical professionals"
-    ],
+    type: "Research",
+    title: "Computational Researcher",
+    organization: "University of Hawaii (Sci-mi)",
+    location: "Honolulu, HI (Remote)",
+    period: "2024",
+    description: "Developed PINN frameworks for photon transport simulation. Achieved a 10,000x speedup over traditional Monte Carlo sampling methods.",
+    impact: ["10,000x Speedup", "PDE Constrained ML", "UNESCO Recognized"]
   },
+  {
+    type: "Research",
+    title: "Lead AI Researcher",
+    organization: "Pulsage System",
+    location: "Bokaro, IN",
+    period: "2023 — 2024",
+    description: "Built a multimodal CNN ensemble for HCM detection. Validated at Bokaro General Hospital with 98.5% sensitivity across 200+ patients.",
+    impact: ["98.5% Accuracy", "Clinical Validation", "Global Rank 1"]
+  }
 ]
 
-export default function SystemLogTimeline() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+function WaveBackground() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const rafRef = useRef<number>(0)
 
-  const fadeIn = {
-    initial: { opacity: 0, y: 30 },
-    animate: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
-  }
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    let W = 0, H = 0, t = 0
+
+    const resize = () => {
+      const dpr = window.devicePixelRatio || 1
+      W = canvas.offsetWidth
+      H = canvas.offsetHeight
+      canvas.width = W * dpr
+      canvas.height = H * dpr
+      ctx.scale(dpr, dpr)
+    }
+
+    const wave = (baseY: number, amp: number, freq: number, phase: number, speed: number) => {
+      ctx.beginPath()
+      for (let x = 0; x <= W; x += 3) {
+        const y = baseY
+          + Math.sin(x * freq + phase + t * speed) * amp
+          + Math.sin(x * freq * 0.6 + phase * 1.3 + t * speed * 0.7) * amp * 0.4
+        x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
+      }
+      ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath()
+    }
+
+    const waves = [
+      { y: 0.85, amp: 40, freq: 0.006, phase: 0.0, speed: 0.5, fill: 'rgba(141,161,185,0.28)', line: 'rgba(141,161,185,0.5)' },
+      { y: 0.72, amp: 32, freq: 0.008, phase: 0.0, speed: 0.8, fill: 'rgba(141,161,185,0.18)', line: 'rgba(141,161,185,0.4)' },
+      { y: 0.62, amp: 24, freq: 0.010, phase: 1.2, speed: 1.1, fill: 'rgba(110,135,165,0.22)', line: 'rgba(110,135,165,0.4)' },
+      { y: 0.52, amp: 18, freq: 0.013, phase: 2.4, speed: 0.6, fill: 'rgba(141,161,185,0.14)', line: 'rgba(141,161,185,0.3)' },
+      { y: 0.42, amp: 14, freq: 0.016, phase: 3.8, speed: 1.4, fill: 'rgba(90,120,160,0.10)',  line: 'rgba(90,120,160,0.2)'  },
+    ]
+
+    const frame = () => {
+      t += 0.06
+      ctx.clearRect(0, 0, W, H)
+
+      // White base
+      ctx.fillStyle = '#ffffff'
+      ctx.fillRect(0, 0, W, H)
+
+      // Dot grid
+      for (let x = 0; x < W; x += 24) {
+        for (let y = 0; y < H; y += 24) {
+          ctx.beginPath()
+          ctx.arc(x, y, 0.6, 0, Math.PI * 2)
+          ctx.fillStyle = 'rgba(141,161,185,0.18)'
+          ctx.fill()
+        }
+      }
+
+      // Waves
+      waves.forEach(w => {
+        wave(H * w.y, w.amp, w.freq, w.phase, w.speed)
+        const grad = ctx.createLinearGradient(0, H * w.y - w.amp, 0, H)
+        grad.addColorStop(0, w.fill)
+        grad.addColorStop(1, w.fill.replace(/[\d.]+\)$/, '0.05)'))
+        ctx.fillStyle = grad
+        ctx.fill()
+
+        // Crest line
+        ctx.beginPath()
+        for (let x = 0; x <= W; x += 3) {
+          const y = H * w.y
+            + Math.sin(x * w.freq + w.phase + t * w.speed) * w.amp
+            + Math.sin(x * w.freq * 0.6 + w.phase * 1.3 + t * w.speed * 0.7) * w.amp * 0.4
+          x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
+        }
+        ctx.strokeStyle = w.line
+        ctx.lineWidth = 1
+        ctx.stroke()
+      })
+
+      // Top-left corner light beam
+      const beam = ctx.createRadialGradient(W * 0.08, H * 0.08, 0, W * 0.08, H * 0.08, W * 0.55)
+      beam.addColorStop(0, 'rgba(141,161,185,0.10)')
+      beam.addColorStop(1, 'rgba(141,161,185,0)')
+      ctx.fillStyle = beam
+      ctx.fillRect(0, 0, W, H)
+
+      rafRef.current = requestAnimationFrame(frame)
+    }
+
+    resize()
+    window.addEventListener('resize', resize)
+    frame()
+
+    return () => {
+      cancelAnimationFrame(rafRef.current)
+      window.removeEventListener('resize', resize)
+    }
+  }, [])
 
   return (
-    <section id="experience" className="py-32 px-6 md:px-12 relative overflow-hidden bg-[#050505]">
-      
-      {/* Dynamic Background Element */}
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full"
+      style={{ pointerEvents: 'none' }}
+    />
+  )
+}
+
+export default function SystemExecutionLog() {
+  const containerRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  })
+
+  const gridMovement = useTransform(scrollYProgress, [0, 1], ["0%", "15%"])
+
+  return (
+    <section ref={containerRef} id="experience" className="py-60 px-6 bg-white relative overflow-hidden">
+
+      {/* Animated wave canvas background */}
+      <WaveBackground />
+
+      {/* Parallax blueprint grid on top */}
       <motion.div
-        className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full blur-[150px] opacity-10 pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.4), transparent)'
-        }}
-        animate={{
-          x: [0, 50, 0],
-          y: [0, 30, 0],
-          scale: [1, 1.1, 1]
-        }}
-        transition={{
-          duration: 30,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
+        style={{ y: gridMovement }}
+        className="absolute inset-0 -z-10 pointer-events-none opacity-[0.06]"
+      >
+        <div className="absolute inset-0" style={{
+          backgroundImage: `
+            linear-gradient(to right, #8DA1B9 1px, transparent 1px),
+            linear-gradient(to bottom, #8DA1B9 1px, transparent 1px)
+          `,
+          backgroundSize: '120px 120px'
+        }} />
+        <div className="absolute top-[10%] left-[5%] w-24 h-24 border-l border-t border-[#8DA1B9]/20" />
+        <div className="absolute bottom-[10%] right-[5%] w-24 h-24 border-r border-b border-[#8DA1B9]/20" />
+      </motion.div>
 
-      <div ref={ref} className="max-w-4xl mx-auto relative z-10">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.8 }}
-          className="space-y-16"
-        >
-          {/* Section Header - Architect Style */}
-          <div className="text-center space-y-4">
-            <motion.div variants={fadeIn}>
-              <h2 
-                className="text-4xl md:text-5xl font-semibold tracking-tighter bg-clip-text text-transparent"
-                style={{
-                  backgroundImage: 'linear-gradient(135deg, #a78bfa 0%, #6366f1 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
-                }}
-              >
-                System Execution Log
-              </h2>
-              <p className="text-lg text-zinc-500 max-w-3xl mx-auto mt-4 font-light">
-                Professional history indexed by type, focusing on tangible technical contributions and high-impact research.
-              </p>
-              
-              <motion.div 
-                className="w-24 h-px mx-auto mt-6"
-                style={{ background: 'linear-gradient(90deg, #6366f1, #a78bfa)' }}
-                initial={{ scaleX: 0 }}
-                animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              />
+      <div className="max-w-6xl mx-auto relative z-10">
+
+        <div className="mb-32">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-[1px] bg-[#8DA1B9]" />
+            <span className="text-[11px] font-bold tracking-[0.4em] text-[#8DA1B9] uppercase">
+              Career / Execution
+            </span>
+          </div>
+          <h2 className="text-5xl md:text-7xl font-bold tracking-tight text-black leading-[1.05]">
+            Professional <br />
+            <span className="text-zinc-300">Milestones.</span>
+          </h2>
+        </div>
+
+        <div className="space-y-0 border-l border-zinc-100 ml-4 md:ml-0">
+          {experiences.map((exp, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.1 }}
+              transition={{ duration: 0.8, delay: index * 0.1 }}
+              className="relative pl-12 pb-24 group last:pb-0"
+            >
+              <div className="absolute left-[-5.5px] top-2 w-2.5 h-2.5 rounded-full bg-white border-2 border-[#8DA1B9] group-hover:border-[#007AFF] transition-all duration-500 group-hover:scale-125" />
+
+              <div className="grid md:grid-cols-12 gap-8 items-start">
+
+                <div className="md:col-span-3 space-y-2">
+                  <p className="text-[10px] font-bold text-[#8DA1B9] uppercase tracking-[0.2em]">{exp.period}</p>
+                  <div className="flex items-center gap-2 text-zinc-400">
+                    <MapPin className="w-3 h-3" />
+                    <span className="text-[10px] font-bold tracking-widest uppercase">{exp.location}</span>
+                  </div>
+                </div>
+
+                <div className="md:col-span-6 space-y-6">
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-bold text-white bg-black px-2 py-0.5 rounded-sm uppercase tracking-tighter">
+                      {exp.type}
+                    </span>
+                    <h3 className="text-2xl md:text-3xl font-bold text-black group-hover:text-[#007AFF] transition-colors duration-500">
+                      {exp.title}
+                    </h3>
+                    <p className="text-[11px] font-bold text-[#8DA1B9] uppercase tracking-[0.3em] leading-none">
+                      {exp.organization}
+                    </p>
+                  </div>
+                  <p className="text-lg text-zinc-500 leading-relaxed font-medium">
+                    {exp.description}
+                  </p>
+                </div>
+
+                <div className="md:col-span-3">
+                  <div className="bg-white/70 backdrop-blur-sm p-6 rounded-2xl border border-zinc-100 group-hover:border-[#8DA1B9]/30 transition-all duration-500">
+                    <p className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                      <Terminal className="w-3 h-3 text-[#007AFF]" /> Output_Log
+                    </p>
+                    <ul className="space-y-3">
+                      {exp.impact.map((item, i) => (
+                        <li key={i} className="flex items-start gap-3 text-xs font-bold text-black">
+                          <div className="w-1 h-1 rounded-full bg-[#007AFF] mt-1.5 shrink-0" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
             </motion.div>
-          </div>
-
-          {/* Timeline */}
-          <div className="relative pl-4 md:pl-0">
-            {/* Center line is now a left-aligned dashed log line */}
-            <div className="absolute left-0 top-0 bottom-0 w-px border-l border-dashed border-zinc-700 md:left-4" />
-
-            {/* Experience items */}
-            <div className="space-y-12">
-              {experiences.map((exp, index) => {
-                const map = experienceMap[exp.type as keyof typeof experienceMap];
-                const Icon = map.icon;
-                
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-                    transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                    className="relative flex items-start gap-8 group"
-                  >
-                    
-                    {/* Log Dot and Icon */}
-                    <div className="flex-shrink-0 relative">
-                        {/* Timeline dot/marker */}
-                        <div className="absolute top-1 left-[-2px] w-1.5 h-1.5 rounded-full bg-indigo-500 z-10 ring-4 ring-[#050505]" />
-                        
-                        {/* Icon Block */}
-                        <div className={`w-10 h-10 rounded-full ${map.bg} flex items-center justify-center border border-zinc-700 ml-4`}>
-                            <Icon className={`w-5 h-5 ${map.color}`} strokeWidth={1.5} />
-                        </div>
-                    </div>
-
-
-                    {/* Content card - Structured Log Entry */}
-                    <div className="flex-1 space-y-4 pt-1 pb-4">
-                      
-                      {/* Header (Type, Title, Period) */}
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-3">
-                           <span className={`text-xs font-mono font-medium ${map.color}`}>{map.label}</span>
-                           <span className="text-xs font-mono text-zinc-500 flex items-center gap-1">
-                             <Calendar className="w-3 h-3 text-zinc-700" />
-                             {exp.period}
-                           </span>
-                        </div>
-                        
-                        <h3 className="text-xl font-semibold text-white tracking-tight group-hover:text-indigo-400 transition-colors">
-                          {exp.title}
-                        </h3>
-                        <p className="text-sm text-zinc-500">
-                          {exp.organization} • <span className="text-zinc-600">{exp.location}</span>
-                        </p>
-                      </div>
-
-                      {/* Description */}
-                      <p className="text-sm text-zinc-400 leading-relaxed border-l-2 border-zinc-800 pl-4 py-1">
-                        {exp.description}
-                      </p>
-
-                      {/* Achievements (Monospace Log Entries) */}
-                      <div className="space-y-2 pt-2">
-                        <p className="text-xs font-mono uppercase text-zinc-600">
-                            Execution Output:
-                        </p>
-                        <ul className="space-y-1">
-                          {exp.achievements.map((achievement, i) => (
-                            <li key={i} className="flex items-start gap-2 text-xs font-mono text-zinc-500">
-                              <span className="text-indigo-400 font-bold flex-shrink-0">$</span>
-                              <span className="text-white/80">{achievement}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </motion.div>
+          ))}
+        </div>
       </div>
-
-      {/* FADE OUT EFFECT AT BOTTOM */}
-      <div 
-        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-20"
-        style={{
-          background: 'linear-gradient(to bottom, transparent, #050505)'
-        }}
-      />
     </section>
   )
 }

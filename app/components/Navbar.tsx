@@ -8,10 +8,8 @@ export default function Navbar() {
   const { scrollY } = useScroll()
   const [isScrolled, setIsScrolled] = useState(false)
 
-  // Standardized way to handle scroll in 2025 - prevents "double firing"
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest > 50 && !isScrolled) setIsScrolled(true)
-    if (latest <= 50 && isScrolled) setIsScrolled(false)
+    setIsScrolled(latest > 50)
   })
 
   const navLinks = [
@@ -23,64 +21,66 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 w-full z-[100] flex justify-center p-6 pointer-events-none">
       <motion.nav
-        layout // This is the magic for smooth size transitions
+        layout
         transition={{
           type: 'spring',
-          stiffness: 160,
-          damping: 25,
-        }}
-        style={{
-          borderRadius: '40px',
+          stiffness: 180,
+          damping: 28,
         }}
         className={`
-          pointer-events-auto flex items-center justify-between px-6 py-2 border
+          pointer-events-auto flex items-center justify-between px-8 py-3 border transition-all duration-500
           ${isScrolled 
-            ? 'w-[450px] bg-zinc-900/80 border-zinc-700 backdrop-blur-md shadow-2xl shadow-black/50' 
+            ? 'w-[380px] bg-white/75 border-zinc-200/60 backdrop-blur-2xl shadow-xl rounded-3xl' 
             : 'w-full max-w-6xl bg-transparent border-transparent'
           }
         `}
       >
-        {/* Logo */}
-        <motion.div layout="position" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shrink-0">
-            <div className="w-2 h-2 bg-black animate-pulse" />
+        {/* Personal Branding */}
+        <motion.div layout="position" className="flex items-center gap-3">
+          {/* Clean "S" Logo */}
+          <div className="w-8 h-8 bg-black rounded-2xl flex items-center justify-center transition-transform hover:scale-105 active:scale-95 duration-300 shadow-inner">
+            <span className="text-white text-2xl font-semibold tracking-[-1px] leading-none translate-y-px">
+              S
+            </span>
           </div>
+
+          {/* Name (only visible when not scrolled) */}
           {!isScrolled && (
-            <motion.span 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-sm font-bold tracking-tighter text-white whitespace-nowrap"
+            <motion.span
+              initial={{ opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="text-[15px] font-semibold tracking-[-0.02em] text-black whitespace-nowrap"
             >
-              SINGH.LABS
+              Sarvagya Singh
             </motion.span>
           )}
         </motion.div>
 
-        {/* Links */}
-        <div className="flex items-center gap-6">
+        {/* Navigation Links */}
+        <div className="flex items-center gap-8">
           {navLinks.map((link) => (
             <motion.div key={link.label} layout="position">
               <Link
                 href={link.href}
-                className="text-[11px] uppercase tracking-[0.2em] font-medium text-zinc-400 hover:text-white transition-colors"
+                className={`text-sm font-medium tracking-tight transition-colors duration-300 ${
+                  isScrolled 
+                    ? 'text-zinc-500 hover:text-black' 
+                    : 'text-zinc-600 hover:text-black'
+                }`}
               >
                 {link.label}
               </Link>
             </motion.div>
           ))}
-          
-          {/* Action Button - Only shows when expanded */}
+
+          {/* Inquiry Button (only visible when not scrolled) */}
           {!isScrolled && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              layout="position"
-            >
-              <Link 
-                href="#contact" 
-                className="bg-white text-black px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider"
+            <motion.div layout="position">
+              <Link
+                href="#contact"
+                className="bg-black text-white text-sm font-medium px-6 py-2.5 rounded-3xl hover:bg-zinc-800 transition-all shadow-sm"
               >
-                Connect
+                Inquiry
               </Link>
             </motion.div>
           )}

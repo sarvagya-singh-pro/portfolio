@@ -1,277 +1,128 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
-import { Heart, Stethoscope, Pill, BookOpen, ExternalLink, ChevronRight, Hash } from 'lucide-react'
+import { motion, useInView } from 'framer-motion'
+import { useRef } from 'react'
+import { ArrowUpRight } from 'lucide-react'
 
 const projects = [
   {
-    id: 1,
-    title: "PulseSage: AI Cardiac Diagnostic System",
-    subtitle: "AI Cardiac Diagnostic System",
-    description: "Revolutionary AI system for early cardiac disease detection, validated by medical professionals. Leverages deep learning to analyze heart rhythms and predict cardiovascular conditions with unprecedented accuracy.",
-    tags: ["Deep Learning", "Healthcare", "Medical AI", "Diagnostics", "Next.js"],
-    icon: Heart,
-    gradient: "from-red-600/10 to-pink-600/10",
-    glowColor: "rgba(239, 68, 68, 0.3)",
-    iconColor: "text-red-400",
-    impact: "Validated by 15+ Cardiologists",
-    rating: 98, // New: Impact rating percentage
-    link: "http://pulseage.vercel.app/"
+    id: "01",
+    title: "Pulsage: Clinical AI System",
+    category: "Multimodal Deep Learning",
+    description: "Architected a dual-modal CNN ensemble fusing 12-lead ECG and cMRI data for Hypertrophic Cardiomyopathy detection. Validated with 98.5% sensitivity at Bokaro General Hospital.",
+    metrics: ["98.5% Accuracy", "Global Rank 1", "ACES ISRC"],
+    tech: ["PyTorch", "ResNet", "EfficientNet", "Vercel Edge"],
+    link: "http://pulseage.vercel.app/",
+    status: "Clinical Validation"
   },
   {
-    id: 2,
-    title: "PromptBiotics: LLM Nutrition Assistant",
-    subtitle: "LLM-Powered Nutrition Assistant",
-    description: "Intelligent nutrition guidance system powered by large language models. Developed under the Young Asians Fellowship, providing personalized dietary recommendations and health insights through conversational AI.",
-    tags: ["LLM", "NLP", "Nutrition", "Fellowship Project", "Prompt Eng."],
-    icon: Pill,
-    gradient: "from-blue-600/10 to-purple-600/10",
-    glowColor: "rgba(59, 130, 246, 0.3)",
-    iconColor: "text-blue-400",
-    impact: "Young Asians Fellowship",
-    rating: 75,
-    link: "https://promptbiotics.org/"
+    id: "02",
+    title: "PINN Framework: Photon Transport",
+    category: "Computational Physics",
+    description: "Developed a Physics-Informed Neural Network (PINN) to approximate photon transport. Achieved a 10,000x speedup over traditional Monte Carlo sampling with <2% error regimes.",
+    metrics: ["10,000x Speedup", "UNESCO Global Award", "Scientific Creativity"],
+    tech: ["Python", "PDE-Constrained ML", "NumPy", "Physics-Informed"],
+    link: "#", // Add paper link if available
+    status: "UNESCO Awarded"
   },
   {
-    id: 3,
-    title: "Tech Dragon: Future Tech Insights",
-    subtitle: "Future Tech Insights & Research",
-    description: "Democratizing AI education through accessible, high-quality content. A comprehensive publication making advanced machine learning concepts understandable for students and researchers across India.",
-    tags: ["Education", "Research", "Publication", "Community", "React"],
-    icon: BookOpen,
-    gradient: "from-purple-600/10 to-indigo-600/10",
-    glowColor: "rgba(139, 92, 246, 0.3)",
-    iconColor: "text-purple-400",
-    impact: "1000+ Readers Reached",
-    rating: 90,
-    link: "https://tech-dragon.co.in/"
-  },
+    id: "03",
+    title: "Nandani: Edge-AIoT Platform",
+    category: "Veterinary Diagnostics",
+    description: "Designed LSTM-based anomaly detection for livestock health via embedded IoT collars. Reduced false positives by 40% and deployed across 40+ rural farms.",
+    metrics: ["40+ Rural Farms", "National Rank 2", "40% FP Reduction"],
+    tech: ["Embedded C++", "LSTM", "IoT Sensors", "Real-Time Inference"],
+    link: "https://gauseva-ai.vercel.app/",
+    status: "Active Deployment"
+  }
 ]
 
-// Component to handle the visual progress bar animation
-const VerticalRatingBar = ({ rating, glowColor }: { rating: number, glowColor: string }) => {
-    const ref = useRef(null)
-    const isInView = useInView(ref, { once: true })
-    
-    // Convert rating percentage to height percentage for bottom-up fill
-    const fillHeight = `${rating}%` 
-
-    return (
-        <div ref={ref} className="w-2 h-full bg-zinc-800 rounded-full overflow-hidden relative">
-            <motion.div
-                className="absolute bottom-0 left-0 right-0 rounded-full"
-                style={{
-                    height: isInView ? fillHeight : 0,
-                    background: `linear-gradient(to top, ${glowColor.replace('0.3', '0.8')} 50%, ${glowColor.replace('0.3', '0.5')})`,
-                    boxShadow: `0 0 10px ${glowColor.replace('0.3', '0.8')}`
-                }}
-                initial={{ height: 0 }}
-                animate={isInView ? { height: fillHeight } : { height: 0 }}
-                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-            />
-        </div>
-    )
-}
-
-
-export default function ProjectDossiers() {
+export default function SystemDossiers() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
-  const [hoveredProject, setHoveredProject] = useState<number | null>(null)
+  const isInView = useInView(ref, { once: false, margin: "-100px" })
 
-  const fadeIn = {
-    initial: { opacity: 0, y: 30 },
-    animate: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
-  }
-  
   return (
-    <section id="research" className="py-32 px-6 md:px-12 relative overflow-hidden bg-[#050505]">
-      
-      {/* Dynamic Background Element */}
-      <motion.div
-        className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-[150px] opacity-10 pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent)'
-        }}
-        animate={{
-          x: [0, -50, 0],
-          y: [0, 30, 0],
-          scale: [1, 1.1, 1]
-        }}
-        transition={{
-          duration: 30,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
-      
-      <div ref={ref} className="max-w-7xl mx-auto relative z-10">
+    <section id="projects" className="py-60 px-6 bg-transparent relative">
+      <div ref={ref} className="max-w-6xl mx-auto relative z-10">
+        
+        {/* Institutional Header */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.8 }}
-          className="space-y-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          className="mb-24"
         >
-          
-          {/* Section Header - Aligning with Architect style */}
-          <div className="text-center space-y-4">
-            <motion.div variants={fadeIn}>
-              <h2 
-                className="text-4xl md:text-5xl font-semibold tracking-tighter bg-clip-text text-transparent"
-                style={{
-                  backgroundImage: 'linear-gradient(135deg, #a78bfa 0%, #6366f1 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
-                }}
-              >
-                Full-Stack Dossiers
-              </h2>
-              <p className="text-lg text-zinc-500 max-w-3xl mx-auto mt-4 font-light">
-                Production-grade projects demonstrating real-world impact and full-spectrum control over data, logic, and deployment.
-              </p>
-              
-              <motion.div 
-                className="w-24 h-px mx-auto mt-6"
-                style={{ background: 'linear-gradient(90deg, #6366f1, #a78bfa)' }}
-                initial={{ scaleX: 0 }}
-                animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              />
-            </motion.div>
-          </div>
+          <span className="text-[11px] font-bold tracking-[0.4em] text-[#8DA1B9] uppercase mb-6 block">
+            Technical / Dossiers
+          </span>
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-black leading-[1.05]">
+            Deployed Systems & <br />
+            <span className="text-zinc-400">Validated Research.</span>
+          </h2>
+        </motion.div>
 
-          {/* Projects Grid */}
-          <div className="grid md:grid-cols-2 gap-8">
-            {projects.map((project, index) => (
-              <motion.a
-                key={project.id}
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                onMouseEnter={() => setHoveredProject(project.id)}
-                onMouseLeave={() => setHoveredProject(null)}
-                className="group relative block"
-              >
+        {/* Project Grid */}
+        <div className="grid lg:grid-cols-1 gap-12">
+          {projects.map((project, index) => (
+            <motion.a
+              key={project.id}
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: index * 0.1 }}
+              className="group relative block bg-white/40 backdrop-blur-md border border-zinc-100 rounded-[32px] p-8 md:p-12 hover:border-[#8DA1B9]/30 transition-all duration-500"
+            >
+              <div className="grid md:grid-cols-12 gap-8 items-start">
                 
-                {/* Subtle glow on hover */}
-                <motion.div
-                  className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl"
-                  style={{
-                    background: `radial-gradient(circle at center, ${project.glowColor}, transparent)`,
-                  }}
-                />
-
-                <motion.div
-                  className="h-full bg-zinc-900/50 backdrop-blur-sm border border-zinc-800 rounded-2xl p-8 cursor-pointer overflow-hidden relative transition-shadow duration-300 hover:shadow-2xl hover:shadow-indigo-900/20"
-                  whileHover={{ y: -6 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                >
-                  
-                  {/* Subtle gradient on hover */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-700`} />
-                  
-                  {/* Content (Z-10 to stay above gradient) */}
-                  <div className="relative z-10 flex space-x-6 h-full">
-                    
-                    {/* LEFT COLUMN: Icon, Title, Description, Tags */}
-                    <div className="flex-grow space-y-6">
-                        
-                        {/* Icon & Title */}
-                        <div className="space-y-3">
-                            <div className="flex items-center justify-between">
-                                <motion.div
-                                    className="w-12 h-12 rounded-lg bg-indigo-600/10 flex items-center justify-center border border-indigo-500/50"
-                                    whileHover={{ scale: 1.05 }}
-                                    transition={{ duration: 0.3 }}
-                                >
-                                    <project.icon className={`w-6 h-6 ${project.iconColor}`} strokeWidth={1.5} />
-                                </motion.div>
-                                <span className="text-3xl font-mono text-zinc-700/50 font-extrabold tracking-tight">
-                                    // 0{project.id}
-                                </span>
-                            </div>
-                            
-                            <div>
-                                <h3 className="text-xl font-semibold text-white tracking-tight">
-                                {project.title}
-                                </h3>
-                                <p className={`text-sm font-medium ${project.iconColor} mt-1 opacity-80`}>
-                                    {project.subtitle}
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Description */}
-                        <p className="text-zinc-400 leading-relaxed text-sm font-light">
-                            {project.description}
-                        </p>
-
-                        {/* Tags (Monospace for Technical Look) */}
-                        <div className="flex flex-wrap gap-2 pt-2">
-                            {project.tags.map((tag, tagIndex) => (
-                                <motion.span
-                                    key={tagIndex}
-                                    className="px-3 py-1 text-xs rounded bg-zinc-800 text-zinc-500 font-mono border border-zinc-700 hover:bg-zinc-700/50 transition-colors duration-300"
-                                    whileHover={{ y: -1 }}
-                                >
-                                    <Hash className="w-3 h-3 inline mr-1 align-sub" strokeWidth={2} />
-                                    {tag}
-                                </motion.span>
-                            ))}
-                        </div>
+                {/* Left Side: Content */}
+                <div className="md:col-span-8 space-y-6">
+                  <div className="flex items-center gap-4">
+                    <span className="text-[10px] font-mono font-bold text-zinc-300">[{project.id}]</span>
+                    <div className="flex items-center gap-2 px-3 py-1 bg-[#007AFF]/5 rounded-full border border-[#007AFF]/10">
+                      <div className="w-1 h-1 rounded-full bg-[#007AFF] animate-pulse" />
+                      <span className="text-[10px] font-bold tracking-widest text-[#007AFF] uppercase">{project.status}</span>
                     </div>
-
-                    {/* RIGHT COLUMN: Impact Rating Bar & Badge */}
-                    <div className="flex-shrink-0 w-24 flex flex-col justify-between items-end text-right">
-                        
-                        {/* Vertical Meter */}
-                        <div className="h-28 w-2 flex justify-center items-end pt-2">
-                            <VerticalRatingBar rating={project.rating} glowColor={project.glowColor} />
-                        </div>
-
-                        {/* Impact Badge */}
-                        <div className="space-y-2">
-                            <p className="text-xs font-mono uppercase text-zinc-600">
-                                Impact/Status
-                            </p>
-                            <div className="inline-flex flex-col gap-1 px-3 py-2 rounded-lg bg-indigo-600/20 text-xs text-indigo-300 font-medium border border-indigo-500/50">
-                                <span className="text-white font-bold">{project.rating}%</span>
-                                <span>{project.impact}</span>
-                            </div>
-                        </div>
-
-                        {/* Visit Project - Subtle animation */}
-                        <motion.div
-                          className="flex items-center gap-1 text-purple-400 font-medium text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 pt-2"
-                          animate={{ x: hoveredProject === project.id ? 5 : 0 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <span className="font-mono text-xs tracking-wider">VIEW</span>
-                          <ChevronRight className="w-4 h-4" />
-                        </motion.div>
-                    </div>
-
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-2xl md:text-3xl font-bold text-black mb-2 flex items-center gap-3">
+                      {project.title}
+                      <ArrowUpRight className="w-5 h-5 text-zinc-300 group-hover:text-[#007AFF] transition-colors" />
+                    </h3>
+                    <p className="text-sm font-bold text-[#8DA1B9] uppercase tracking-widest">{project.category}</p>
                   </div>
 
-                </motion.div>
-              </motion.a>
-            ))}
-          </div>
-        </motion.div>
-      </div>
+                  <p className="text-lg text-zinc-500 leading-relaxed max-w-2xl">
+                    {project.description}
+                  </p>
 
-      {/* FADE OUT EFFECT AT BOTTOM */}
-      <div 
-        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-20"
-        style={{
-          background: 'linear-gradient(to bottom, transparent, #050505)'
-        }}
-      />
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech.map((t) => (
+                      <span key={t} className="text-[11px] font-mono text-zinc-400 border border-zinc-100 px-2 py-0.5 rounded">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right Side: Performance Metrics */}
+                <div className="md:col-span-4 h-full flex flex-col justify-between">
+                  <div className="space-y-6 md:pl-12 md:border-l border-zinc-100">
+                    {project.metrics.map((metric, i) => (
+                      <div key={i} className="group/metric">
+                        <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1 group-hover/metric:text-[#007AFF] transition-colors">Key Result 0{i+1}</p>
+                        <p className="text-xl font-bold text-black">{metric}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+            </motion.a>
+          ))}
+        </div>
+      </div>
     </section>
   )
 }
