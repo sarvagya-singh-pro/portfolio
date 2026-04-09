@@ -22,7 +22,7 @@ const projects = [
     description: "Developed a Physics-Informed Neural Network (PINN) to approximate photon transport. Achieved a 10,000x speedup over traditional Monte Carlo sampling with <2% error regimes.",
     metrics: ["10,000x Speedup", "UNESCO Global Award", "Scientific Creativity"],
     tech: ["Python", "PDE-Constrained ML", "NumPy", "Physics-Informed"],
-    link: "#", // Add paper link if available
+    link: "/PINN_for_varing_wavelents.pdf", // Add paper link if available
     status: "UNESCO Awarded"
   },
   {

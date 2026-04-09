@@ -111,10 +111,7 @@ export default function Testimonials() {
 
         {/* Closing Signature */}
         <div className="mt-40 text-center">
-          <div className="inline-flex items-center gap-3 px-6 py-3 bg-white border border-zinc-100 rounded-3xl text-xs font-semibold text-zinc-400 tracking-[0.5em]">
-            <div className="w-2 h-2 bg-[#8DA1B9] rounded-full animate-pulse" />
-            VERIFIED BY INDUSTRY &amp; ACADEMIA
-          </div>
+         
         </div>
       </div>
     </section>

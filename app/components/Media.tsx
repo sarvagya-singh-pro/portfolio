@@ -137,21 +137,7 @@ export default function MediaArchive() {
         </div>
 
         {/* Footer Note */}
-        <div className="mt-40 pt-12 border-t border-zinc-100 flex flex-col md:flex-row justify-between items-center gap-6">
-           <p className="text-[10px] font-bold text-zinc-300 uppercase tracking-[0.5em]">
-             Authorized Media Log // 2024-2026
-           </p>
-           <div className="flex gap-8">
-              <div className="flex flex-col">
-                <span className="text-[10px] font-bold text-black">15+</span>
-                <span className="text-[9px] text-zinc-400 uppercase tracking-tighter">Features</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] font-bold text-black">National</span>
-                <span className="text-[9px] text-zinc-400 uppercase tracking-tighter">Scope</span>
-              </div>
-           </div>
-        </div>
+       
       </div>
     </section>
   )
