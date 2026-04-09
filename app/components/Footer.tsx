@@ -4,9 +4,8 @@ import { motion } from 'framer-motion'
 import { Github, Linkedin, Mail, Twitter, Terminal, ArrowUpRight } from 'lucide-react'
 
 const socialLinks = [
-  { icon: Github, href: "https://github.com/yourusername", label: "GH_01" },
-  { icon: Linkedin, href: "https://linkedin.com/in/sarvagya-singh", label: "LN_02" },
-  { icon: Twitter, href: "https://twitter.com/yourusername", label: "TW_03" },
+  { icon: Github, href: "https://github.com/sarvagya-singh-pro", label: "GH_01" },
+  { icon: Linkedin, href: "https://linkedin.com/in/sarvagyasingh-dev", label: "LN_02" },
   { icon: Mail, href: "mailto:singhsarvagya260508@gmail.com", label: "EM_04" },
 ]
 
@@ -129,9 +128,7 @@ export default function SystemFooter() {
           </div>
           
           <div className="flex gap-8">
-            <span className="text-[10px] font-bold text-zinc-300 uppercase tracking-tighter italic">
-              Built with Next.js, Framer Motion & Typeface Inter
-            </span>
+         
           </div>
         </div>
       </div>
