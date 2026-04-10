@@ -187,7 +187,6 @@ export default function FormalResearchIndex() {
 
       {/* Parallax blueprint grid overlay */}
       <motion.div
-        style={{ y: gridY }}
         className="absolute inset-0 pointer-events-none"
         style={{ y: gridY, zIndex: 0 }}
       >

@@ -30,21 +30,26 @@ export default function DustyBlueRibbon() {
     let time = 0
 
     function animate() {
-      time += 0.012 // Ultra-slow for that premium, weighted feel
-      ctx.clearRect(0, 0, width, height)
+      // 1. Re-verify the context to keep TypeScript happy
+      const canvas = canvasRef.current
+      const ctx = canvas?.getContext('2d')
+      if (!ctx || !canvas) return
+
+      time += 0.012
       
+      // Clear with the background color
       ctx.fillStyle = '#ffffff'
       ctx.fillRect(0, 0, width, height)
 
       // --- DUSTY BLUE LIQUID DYNAMICS ---
-      // Base Color: #8DA1B9 (Dusty Blue)
       const layers = [
-        { width: 180, color: 'rgba(141, 161, 185, 0.08)', blur: 60, offset: 0 },   // Ambient drift
-        { width: 120, color: 'rgba(110, 135, 165, 0.65)', blur: 30, offset: 12 },  // Main silk body
-        { width: 40, color: 'rgba(255, 255, 255, 0.25)', blur: 15, offset: -8 }   // Specular edge
+        { width: 180, color: 'rgba(141, 161, 185, 0.08)', blur: 60, offset: 0 },
+        { width: 120, color: 'rgba(110, 135, 165, 0.65)', blur: 30, offset: 12 },
+        { width: 40, color: 'rgba(255, 255, 255, 0.25)', blur: 15, offset: -8 }
       ]
 
       layers.forEach((layer) => {
+        ctx.save() // Better practice for filters
         ctx.filter = `blur(${layer.blur}px)`
         ctx.beginPath()
         ctx.strokeStyle = layer.color
@@ -52,18 +57,26 @@ export default function DustyBlueRibbon() {
         ctx.lineCap = 'round'
         ctx.lineJoin = 'round'
 
+        // Start off-screen at the top
         const startX = width * 0.75 + layer.offset
-        ctx.moveTo(startX, -300)
+        ctx.moveTo(startX, -100)
 
-        // Flat, elegant "S" path
-        for (let i = 0; i < 48; i++) {
-          const t = i / 8
-          // Large amplitude, low frequency swing
-          const x = (width * 0.72 + Math.sin(t + time) * (width * 0.18)) + layer.offset
-          const y = (i * (height / 30)) + Math.cos(time * 0.25) * 40
+        // Generate the silk path
+        for (let i = 0; i <= 60; i++) {
+          const y = (i / 60) * (height + 200)
+          
+          // Smooth wave logic: 
+          // Math.sin creates the horizontal sway
+          // (y * 0.002) ensures the wave flows down the length of the ribbon
+          const x = (width * 0.7) + 
+                    Math.sin(y * 0.0015 + time) * (width * 0.15) + 
+                    layer.offset
+          
           ctx.lineTo(x, y)
         }
+        
         ctx.stroke()
+        ctx.restore() // Reset state for the next layer
       })
 
       animationRef.current = requestAnimationFrame(animate)
