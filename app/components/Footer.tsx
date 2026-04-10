@@ -55,9 +55,7 @@ export default function SystemFooter() {
               <h3 className="text-3xl font-bold tracking-tighter text-black mb-4">
                 SARVAGYA <span className="text-zinc-300">SINGH</span>
               </h3>
-              <p className="text-sm font-medium text-zinc-500 max-w-sm leading-relaxed">
-                Full-Stack Developer & AI Researcher specializing in Physics-Informed Neural Networks and high-integrity medical diagnostic systems.
-              </p>
+            
             </div>
 
             <div className="space-y-4">
@@ -116,21 +114,7 @@ export default function SystemFooter() {
         </div>
 
         {/* System Status Bar */}
-        <div className="pt-12 border-t border-zinc-100 flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="flex items-center gap-6">
-             <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#007AFF] animate-pulse" />
-                <span className="text-[10px] font-bold text-black uppercase tracking-widest">System Active</span>
-             </div>
-             <p className="text-[10px] font-bold text-zinc-300 uppercase tracking-widest">
-               © {new Date().getFullYear()} DEPLOYMENT_v2.0.4
-             </p>
-          </div>
-          
-          <div className="flex gap-8">
-         
-          </div>
-        </div>
+        
       </div>
     </footer>
   )
