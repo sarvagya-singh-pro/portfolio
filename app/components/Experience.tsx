@@ -1,6 +1,6 @@
 'use client'
 
-import { useVisible } from './useVisible'
+import { useVisible } from './UseVisible'
 
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useEffect, useRef } from 'react'
