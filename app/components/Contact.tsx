@@ -1,32 +1,33 @@
 'use client'
 
 import { motion, useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
+import type { FormEvent } from 'react'
 import { Mail, Linkedin, Github, Send, Sparkles } from 'lucide-react'
 
 export default function Contact() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
-  const [focusedField, setFocusedField] = useState<string | null>(null)
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const f = new FormData(e.currentTarget)
+    const name = String(f.get('name') || '')
+    const email = String(f.get('email') || '')
+    const message = String(f.get('message') || '')
+    window.location.href =
+      `mailto:ss612@st-andrews.ac.uk?subject=${encodeURIComponent('Message from ' + name)}` +
+      `&body=${encodeURIComponent(message + '\n\n' + name + ' (' + email + ')')}`
+  }
 
   return (
     <section id="contact" className="py-32 px-6 md:px-12 relative overflow-hidden bg-black">
       
-      {/* Subtle animated background glows (dusty blue theme) */}
-      <div className="absolute inset-0">
-        <motion.div
-          className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full blur-[120px]"
-          style={{ background: 'radial-gradient(circle, rgba(141, 161, 185, 0.15), transparent)' }}
-          animate={{ scale: [1, 1.4, 1], opacity: [0.4, 0.8, 0.4] }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute bottom-1/3 right-1/4 w-96 h-96 rounded-full blur-[120px]"
-          style={{ background: 'radial-gradient(circle, rgba(141, 161, 185, 0.12), transparent)' }}
-          animate={{ scale: [1.2, 1, 1.2], opacity: [0.4, 0.8, 0.4] }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </div>
+      {/* Soft glows: static gradients (no blur filters or looping animation) */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(circle at 25% 33%, rgba(141,161,185,0.16), transparent 45%), radial-gradient(circle at 75% 70%, rgba(141,161,185,0.12), transparent 45%)' }}
+      />
 
       <div ref={ref} className="max-w-6xl mx-auto relative z-10">
         
@@ -56,13 +57,11 @@ export default function Contact() {
           >
             <h3 className="text-2xl font-light text-white">Send me a message</h3>
             
-            <form className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-8">
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Your name"
-                  onFocus={() => setFocusedField('name')}
-                  onBlur={() => setFocusedField(null)}
+                  name="name" required placeholder="Your name"
                   className="w-full bg-transparent border-b border-white/30 pb-4 text-white placeholder-white/40 focus:outline-none focus:border-[#8DA1B9] text-lg transition-colors"
                 />
               </div>
@@ -70,19 +69,15 @@ export default function Contact() {
               <div className="relative">
                 <input
                   type="email"
-                  placeholder="your@email.com"
-                  onFocus={() => setFocusedField('email')}
-                  onBlur={() => setFocusedField(null)}
+                  name="email" required placeholder="your@email.com"
                   className="w-full bg-transparent border-b border-white/30 pb-4 text-white placeholder-white/40 focus:outline-none focus:border-[#8DA1B9] text-lg transition-colors"
                 />
               </div>
 
               <div className="relative">
                 <textarea
-                  placeholder="What are we building together?"
+                  name="message" required placeholder="What are we building together?"
                   rows={4}
-                  onFocus={() => setFocusedField('message')}
-                  onBlur={() => setFocusedField(null)}
                   className="w-full bg-transparent border-b border-white/30 pb-4 text-white placeholder-white/40 focus:outline-none focus:border-[#8DA1B9] text-lg resize-none transition-colors"
                 />
               </div>
@@ -119,9 +114,9 @@ export default function Contact() {
             {/* Social Links - Clean */}
             <div className="space-y-6">
               {[
-                { icon: Mail, label: "Email", value: "singhsarvagya260508@gmail.com", href: "mailto:singhsarvagya260508@gmail.com" },
-                { icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/sarvagyasingh-dev", href: "#" },
-                { icon: Github, label: "GitHub", value: "github.com/sarvagya-singh-pro", href: "#" },
+                { icon: Mail, label: "Email", value: "ss612@st-andrews.ac.uk", href: "mailto:ss612@st-andrews.ac.uk" },
+                { icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/sarvagyasingh-dev", href: "https://linkedin.com/in/sarvagyasingh-dev" },
+                { icon: Github, label: "GitHub", value: "github.com/sarvagya-singh-pro", href: "https://github.com/sarvagya-singh-pro" },
               ].map((social) => (
                 <motion.a
                   key={social.label}

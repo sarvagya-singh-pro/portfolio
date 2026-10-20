@@ -2,38 +2,30 @@
 
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import { useRef } from 'react'
-import { Award, Zap, Terminal, Microscope, Cpu } from 'lucide-react'
+import { Award, Medal, Terminal, Microscope, Cpu } from 'lucide-react'
 
 const milestones = [
   {
     year: "2025",
-    rank: "Global Finalist",
+    rank: "Winner • 1st of 3,062",
     title: "UNESCO Quantum Science Competition",
-    description: "Physics-Informed Neural Network (PINN) framework for photon behavior simulation. Awarded for Scientific Creativity.",
-    tag: "Quantum Physics",
+    description: "Best Scientific Creativity Award (global top prize) for PhotonPINN3D, a physics-informed surrogate for Monte Carlo photon transport with 117× faster CPU inference.",
+    tag: "Quantum Physics & AI",
     icon: Microscope
   },
   {
-    year: "2024",
-    rank: "Global Rank 1",
-    title: "ACES ISRC Cardiac AI Competition",
-    description: "Architected Pulsage: a multimodal ECG/cMRI diagnostic ensemble with 98.5% sensitivity. Validated at Bokaro General Hospital.",
-    tag: "Medical AI",
-    icon: Zap
-  },
-  {
-    year: "2024",
-    rank: "Top 7% Selection",
-    title: "IISER Bhopal Summer Fellowship",
-    description: "Selected from 3,500+ applicants for advanced research in RAG systems and computational biology.",
-    tag: "Research Fellowship",
+    year: "2025",
+    rank: "Top 10 of 1,500+ Teams",
+    title: "Google GenAI Hackathon APAC",
+    description: "Designed Blue Ocean solo: a multi-agent system (Gemini 3 Pro) tracking competitor activity and regulatory change across 10+ RSS sources.",
+    tag: "AI Agents",
     icon: Terminal
   },
   {
     year: "2024",
     rank: "All-India Rank 15",
-    title: "World Robotics Olympiad (WRO)",
-    description: "Developed an autonomous structural health monitoring rover using LiDAR fusion and real-time computer vision.",
+    title: "World Robot Olympiad Nationals",
+    description: "Led navigation and computer vision on a ROS2 inspection rover using LiDAR–camera fusion and TensorRT-accelerated YOLO.",
     tag: "Robotics",
     icon: Cpu
   },
@@ -41,9 +33,17 @@ const milestones = [
     year: "2023",
     rank: "National Rank 2",
     title: "NIT Industry Academia Conclave",
-    description: "National recognition for GauSeva AI (Nandani), an IoT-edge platform for cattle health anomaly detection.",
+    description: "National recognition for Nandani, an edge-AIoT platform for livestock health anomaly detection, now running on 40+ farms.",
     tag: "IoT & Edge AI",
     icon: Award
+  },
+  {
+    year: "DPS Bokaro",
+    rank: "Gold Medal",
+    title: "Blaise Pascal Gold Medal",
+    description: "Awarded by the DPS Bokaro Society Foundation for best overall academic and co-curricular performance in Computer Science.",
+    tag: "Academics",
+    icon: Medal
   }
 ]
 

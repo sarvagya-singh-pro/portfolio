@@ -3,50 +3,35 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { Newspaper, ExternalLink, ArrowRight } from 'lucide-react'
-import Image from 'next/image'
 
 const pressItems = [
   {
     title: "DPS Bokaro student innovates ‘Nandini’ AI App to transform cattle health",
     outlet: "The Researchers",
-    date: "DEC 2024",
+    date: "DEC 2023",
     link: "https://www.theresearchers.us/2023/12/12/dps-bokaro-students-innovates-nandini-ai-app-to-transform-cattle-health/",
-    category: "AI & Healthcare"
-  },
-  {
-    title: "Projects of students qualify for NCSC national final",
-    outlet: "Jharkhand Story",
-    date: "SEPT 2024",
-    link: "https://thejharkhandstory.co.in/dps-bokaro-three-projects-of-students-qualify-for-ncsc-crc-national-final/",
-    category: "Research"
-  },
-  {
-    title: "New Innovation to help detect faults in buildings",
-    outlet: "VARNANLIVE",
-    date: "MAR 2025",
-    link: "https://varnanlive.com/2025/08/28/dps-bokaro-students-invent-ai-model-to-ensure-breach-free-structures-qualify-for-world-robot-olympiad-nationals/",
-    category: "Robotics"
+    category: "AI & Edge"
   },
   {
     title: "Student Innovator Ranks Second at NIT Jamshedpur",
     outlet: "Prabhat Khabar",
     date: "NOV 2024",
-    link: "#",
+    link: "", // TODO: add article URL
     category: "National Award"
   },
   {
-    title: "Research Scholar Selected for IISER Bhopal Program",
-    outlet: "Academic Excellence Weekly",
-    date: "JUNE 2024",
-    link: "https://news.careers360.com/iiser-bhopal-organises-science-summer-outreach-camp-for-school-students",
-    category: "Fellowship"
+    title: "New Innovation to help detect faults in buildings",
+    outlet: "VARNANLIVE",
+    date: "AUG 2025",
+    link: "https://varnanlive.com/2025/08/28/dps-bokaro-students-invent-ai-model-to-ensure-breach-free-structures-qualify-for-world-robot-olympiad-nationals/",
+    category: "Robotics"
   },
   {
     title: "Team Qualifies for World Robot Olympiad Nationals",
-    outlet: 'Dainik Bhaskar',
+    outlet: "Dainik Bhaskar",
     date: "AUG 2025",
-    link: "#",
-    category: "Engineering"
+    link: "", // TODO: add article URL
+    category: "Robotics"
   }
 ]
 
@@ -92,13 +77,12 @@ export default function MediaArchive() {
         </div>
 
         {/* Media Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-zinc-100 border border-zinc-100 overflow-hidden rounded-3xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-zinc-100 border border-zinc-100 overflow-hidden rounded-3xl">
           {pressItems.map((item, i) => (
             <motion.a
               key={i}
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={item.link || undefined}
+              target={item.link ? "_blank" : undefined} rel="noopener noreferrer"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}

@@ -1,91 +1,47 @@
 'use client'
 
-import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
-import { useState } from 'react'
-import Link from 'next/link'
+import { useEffect, useState } from 'react'
+
+const links = [
+  { href: '#about', label: 'About' },
+  { href: '#projects', label: 'Projects' },
+  { href: '#experience', label: 'Experience' },
+  { href: '#contact', label: 'Contact' },
+]
 
 export default function Navbar() {
-  const { scrollY } = useScroll()
-  const [isScrolled, setIsScrolled] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setIsScrolled(latest > 50)
-  })
-
-  const navLinks = [
-    { href: '#about', label: 'About' },
-    { href: '#research', label: 'Research' },
-    { href: '#contact', label: 'Contact' },
-  ]
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
-    <header className="fixed top-0 left-0 w-full z-[100] flex justify-center p-6 pointer-events-none">
-      <motion.nav
-        layout
-        transition={{
-          type: 'spring',
-          stiffness: 180,
-          damping: 28,
-        }}
-        className={`
-          pointer-events-auto flex items-center justify-between px-8 py-3 border transition-all duration-500
-          ${isScrolled 
-            ? 'w-[380px] bg-white/75 border-zinc-200/60 backdrop-blur-2xl shadow-xl rounded-3xl' 
-            : 'w-full max-w-6xl bg-transparent border-transparent'
-          }
-        `}
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4">
+      <nav
+        className={`pointer-events-auto flex w-full max-w-5xl items-center justify-between rounded-full px-5 py-2.5 transition-all duration-300 ${
+          scrolled ? 'bg-white/90 shadow-[0_4px_24px_rgba(20,32,46,0.08)] ring-1 ring-[#DCE3EB]' : 'bg-transparent'
+        }`}
       >
-        {/* Personal Branding */}
-        <motion.div layout="position" className="flex items-center gap-3">
-          {/* Clean "S" Logo */}
-          <div className="w-8 h-8 bg-black rounded-2xl flex items-center justify-center transition-transform hover:scale-105 active:scale-95 duration-300 shadow-inner">
-            <span className="text-white text-2xl font-semibold tracking-[-1px] leading-none translate-y-px">
-              S
-            </span>
-          </div>
-
-          {/* Name (only visible when not scrolled) */}
-          {!isScrolled && (
-            <motion.span
-              initial={{ opacity: 0, x: -12 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="text-[15px] font-semibold tracking-[-0.02em] text-black whitespace-nowrap"
-            >
-              Sarvagya Singh
-            </motion.span>
-          )}
-        </motion.div>
-
-        {/* Navigation Links */}
-        <div className="flex items-center gap-8">
-          {navLinks.map((link) => (
-            <motion.div key={link.label} layout="position">
-              <Link
-                href={link.href}
-                className={`text-sm font-medium tracking-tight transition-colors duration-300 ${
-                  isScrolled 
-                    ? 'text-zinc-500 hover:text-black' 
-                    : 'text-zinc-600 hover:text-black'
+        <a href="#top" className="font-display text-lg text-[#14202E]">Sarvagya Singh</a>
+        <ul className="flex items-center gap-1 text-sm">
+          {links.map((l) => (
+            <li key={l.href} className={l.label === 'Contact' ? '' : 'hidden sm:block'}>
+              <a
+                href={l.href}
+                className={`rounded-full px-3.5 py-1.5 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#3E5873] ${
+                  l.label === 'Contact' ? 'bg-[#14202E] text-white hover:bg-[#3E5873]' : 'text-[#4B5B6D] hover:text-[#14202E]'
                 }`}
               >
-                {link.label}
-              </Link>
-            </motion.div>
+                {l.label}
+              </a>
+            </li>
           ))}
-
-          {/* Inquiry Button (only visible when not scrolled) */}
-          {!isScrolled && (
-            <motion.div layout="position">
-              <Link
-                href="#contact"
-                className="bg-black text-white text-sm font-medium px-6 py-2.5 rounded-3xl hover:bg-zinc-800 transition-all shadow-sm"
-              >
-                Inquiry
-              </Link>
-            </motion.div>
-          )}
-        </div>
-      </motion.nav>
+        </ul>
+      </nav>
     </header>
   )
 }

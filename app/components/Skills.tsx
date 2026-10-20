@@ -6,56 +6,29 @@ import { useRef } from 'react'
 const techStack = [
   {
     domain: "AI & Machine Learning",
-    focus: "Physics-Informed & Clinical Intelligence",
-    technologies: [
-      "PyTorch", 
-      "Physics-Informed Neural Networks (PINNs)", 
-      "Multimodal Deep Learning", 
-      "CNNs & ResNet", 
-      "MobileNet", 
-      "Retrieval-Augmented Generation (RAG)", 
-      "Adapter-Tuned LLMs"
-    ]
+    focus: "Physics-Informed & Safety-Validated",
+    technologies: ["PyTorch", "Physics-Informed Neural Networks", "LLM Fine-Tuning (GPT-4o)", "RAG", "Hybrid Search (BM25 + Semantic)", "Cross-Encoder Reranking", "LLM Safety Evals", "AI Agents (Gemini)", "CNNs", "LSTM"]
   },
   {
     domain: "Edge Computing & IoT",
     focus: "Real-World Deployment",
-    technologies: [
-      "IoT Sensors & On-Device Sensing", 
-      "Edge-Optimized Inference", 
-      "Time-Series Modeling", 
-      "Real-Time Processing", 
-      "Low-Power Embedded Systems"
-    ]
+    technologies: ["ONNX", "TensorRT", "INT8 Quantization", "MQTT", "SQLite", "Edge Deployment", "Offline-First Design"]
   },
   {
     domain: "Robotics & Computer Vision",
     focus: "Autonomous Systems",
-    technologies: [
-      "LiDAR-Based Navigation", 
-      "Computer Vision & Object Detection", 
-      "Ultrasonic Sensing", 
-      "Autonomous Ground Rovers", 
-      "Two-Stage AI Pipelines"
-    ]
+    technologies: ["ROS2", "YOLO", "LiDAR–Camera EKF Fusion", "A* / DWA Path Planning", "TensorRT"]
   },
   {
-    domain: "Full-Stack & Platforms",
-    focus: "Scalable Applications",
-    technologies: [
-      "Next.js", 
-      "TypeScript", 
-      "Node.js", 
-      "Vercel", 
-      "Tailwind CSS", 
-      "Cloud-Connected Dashboards"
-    ]
+    domain: "Languages & Backend",
+    focus: "Core Tooling",
+    technologies: ["Python", "SQL", "JavaScript", "FastAPI", "REST", "Docker", "Git", "NVIDIA RAPIDS"]
   }
 ]
 
 export default function ArchitecturalStack() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: false, margin: "-100px" })
+  const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   const springTransition = { duration: 1, ease: [0.16, 1, 0.3, 1] }
 
@@ -102,7 +75,7 @@ export default function ArchitecturalStack() {
                 {item.technologies.map((tech, techIndex) => (
                   <span 
                     key={techIndex}
-                    className="px-3 py-1 text-[12px] font-semibold text-zinc-500 border border-zinc-100 rounded-full bg-white/40 backdrop-blur-sm transition-all duration-300 hover:border-[#8DA1B9] hover:text-black hover:bg-white"
+                    className="px-3 py-1 text-[12px] font-semibold text-zinc-500 border border-zinc-100 rounded-full bg-white/60 transition-all duration-300 hover:border-[#8DA1B9] hover:text-black hover:bg-white"
                   >
                     {tech}
                   </span>

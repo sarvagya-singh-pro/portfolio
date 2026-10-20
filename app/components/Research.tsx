@@ -7,39 +7,49 @@ import { ArrowUpRight } from 'lucide-react'
 const projects = [
   {
     id: "01",
-    title: "Pulsage: Clinical AI System",
-    category: "Multimodal Deep Learning",
-    description: "Architected a dual-modal CNN ensemble fusing 12-lead ECG and cMRI data for Hypertrophic Cardiomyopathy detection. Validated with 98.5% sensitivity at Bokaro General Hospital.",
-    metrics: ["98.5% Accuracy", "Global Rank 1", "ACES ISRC"],
-    tech: ["PyTorch", "ResNet", "EfficientNet", "Vercel Edge"],
-    link: "http://pulseage.vercel.app/",
-    status: "Clinical Validation"
+    title: "Nandani: Edge-AIoT Livestock Health Platform",
+    category: "Lead Engineer • Team of 3",
+    description: "Compressed an LSTM anomaly detector onto a Cortex-M4 collar (256 KB RAM, under 10 mW). Architected offline-first MQTT + SQLite sync for intermittent 2G and deployed across 40+ smallholder farms, with IIT (ISM) on hardware.",
+    metrics: ["40+ Farms Deployed", "40% Fewer False Positives", "National Rank 2 • NIT Conclave"],
+    tech: ["LSTM", "INT8 Quantization", "MQTT", "SQLite", "Cortex-M4"],
+    link: "https://gauseva-ai.vercel.app/",
+    status: "Deployed"
   },
   {
     id: "02",
-    title: "PINN Framework: Photon Transport",
-    category: "Computational Physics",
-    description: "Developed a Physics-Informed Neural Network (PINN) to approximate photon transport. Achieved a 10,000x speedup over traditional Monte Carlo sampling with <2% error regimes.",
-    metrics: ["10,000x Speedup", "UNESCO Global Award", "Scientific Creativity"],
-    tech: ["Python", "PDE-Constrained ML", "NumPy", "Physics-Informed"],
-    link: "/PINN_for_varing_wavelents.pdf", // Add paper link if available
-    status: "UNESCO Awarded"
+    title: "PulseAge: Multimodal Cardiac Diagnosis Support",
+    category: "Team of 3",
+    description: "ResNet-50 + EfficientNet-B4 ensemble fusing ECG and cardiac MRI to flag hypertrophic cardiomyopathy. Handles 1:8 class imbalance with focal loss, with sub-200 ms inference on GPU-free hardware after INT8 quantization.",
+    metrics: ["Sub-200 ms Inference", "ECG + cMRI Fusion", "1:8 Imbalance Handled"],
+    tech: ["PyTorch", "ResNet-50", "EfficientNet-B4", "Focal Loss", "INT8"],
+    link: "https://pulseage.vercel.app/",
+    status: "Live Demo"
   },
   {
     id: "03",
-    title: "Nandani: Edge-AIoT Platform",
-    category: "Veterinary Diagnostics",
-    description: "Designed LSTM-based anomaly detection for livestock health via embedded IoT collars. Reduced false positives by 40% and deployed across 40+ rural farms.",
-    metrics: ["40+ Rural Farms", "National Rank 2", "40% FP Reduction"],
-    tech: ["Embedded C++", "LSTM", "IoT Sensors", "Real-Time Inference"],
-    link: "https://gauseva-ai.vercel.app/",
-    status: "Active Deployment"
+    title: "Autonomous Inspection Rover",
+    category: "Navigation & CV Lead • Team of 3",
+    description: "ROS2 rover with LiDAR–camera EKF fusion and A*/DWA path planning, plus TensorRT-accelerated YOLO. Led navigation and computer vision integration.",
+    metrics: ["All-India Rank 15", "35 FPS YOLO", "Under 50 ms Latency"],
+    tech: ["ROS2", "YOLO", "TensorRT", "EKF", "A* / DWA"],
+    link: "",
+    status: "WRO Nationals"
+  },
+  {
+    id: "04",
+    title: "Blue Ocean: Multi-Agent Market & Regulatory Intelligence",
+    category: "Solo Project",
+    description: "Multi-agent system (Gemini 3 Pro) that tracks competitor activity and regulatory change, with an RSS ingestion pipeline over 10+ sources accelerated with NVIDIA RAPIDS.",
+    metrics: ["Top 10 of 1,500+ Teams", "10+ Sources Ingested", "Google GenAI Hackathon APAC"],
+    tech: ["Gemini 3 Pro", "Multi-Agent", "NVIDIA RAPIDS", "RSS"],
+    link: "",
+    status: "Hackathon"
   }
 ]
 
 export default function SystemDossiers() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: false, margin: "-100px" })
+  const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   return (
     <section id="projects" className="py-60 px-6 bg-transparent relative">
@@ -55,8 +65,8 @@ export default function SystemDossiers() {
             Technical / Dossiers
           </span>
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-black leading-[1.05]">
-            Deployed Systems & <br />
-            <span className="text-zinc-400">Validated Research.</span>
+            Systems Built <br />
+            <span className="text-zinc-400">Under Constraints.</span>
           </h2>
         </motion.div>
 
@@ -65,13 +75,12 @@ export default function SystemDossiers() {
           {projects.map((project, index) => (
             <motion.a
               key={project.id}
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={project.link || undefined}
+              target={project.link ? "_blank" : undefined} rel="noopener noreferrer"
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: index * 0.1 }}
-              className="group relative block bg-white/40 backdrop-blur-md border border-zinc-100 rounded-[32px] p-8 md:p-12 hover:border-[#8DA1B9]/30 transition-all duration-500"
+              className="group relative block bg-white/60 border border-zinc-100 rounded-[32px] p-8 md:p-12 hover:border-[#8DA1B9]/30 transition-all duration-500"
             >
               <div className="grid md:grid-cols-12 gap-8 items-start">
                 
@@ -88,7 +97,7 @@ export default function SystemDossiers() {
                   <div>
                     <h3 className="text-2xl md:text-3xl font-bold text-black mb-2 flex items-center gap-3">
                       {project.title}
-                      <ArrowUpRight className="w-5 h-5 text-zinc-300 group-hover:text-[#007AFF] transition-colors" />
+                      {project.link && <ArrowUpRight className="w-5 h-5 text-zinc-300 group-hover:text-[#007AFF] transition-colors" />}
                     </h3>
                     <p className="text-sm font-bold text-[#8DA1B9] uppercase tracking-widest">{project.category}</p>
                   </div>
